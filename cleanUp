@@ -9,7 +9,7 @@ export LOGDIR=$WORKDIR/logs
 export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$1
 export DATA_ORIGIN=$2
 
-echo $HOMEDIR;
+# echo $HOMEDIR;
 
 rm -r $RUNDIR
 rm -r $RESULTSDIR

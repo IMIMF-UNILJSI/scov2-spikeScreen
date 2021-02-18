@@ -11,7 +11,7 @@ export DATA_ORIGIN=$2
 
 ########################################################################
 
-echo $HOMEDIR;
+# echo $HOMEDIR;
 
 if [  ! -d "$RUNDIR" ]; then
 	mkdir $RUNDIR

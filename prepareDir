@@ -1,4 +1,0 @@
-#!/bin/bash
-
-rm -r logs results runs
-mkdir logs results runs
