@@ -6,15 +6,12 @@ export RUNDIR=$WORKDIR/runs
 export RESULTSDIR=$WORKDIR/results
 export LOGDIR=$WORKDIR/logs
 
-export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$2
-export DATA_ORIGIN=$3
+export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$1
+export DATA_ORIGIN=$2
 
+########################################################################
 
 echo $HOMEDIR;
-
-if [ ! -f "$HOMEDIR/spikeScreenContainer.sif" ]; then
-	$HOMEDIR/buildContainer local
-fi
 
 if [  ! -d "$RUNDIR" ]; then
 	mkdir $RUNDIR
@@ -44,4 +41,4 @@ cd $WORKDIR
 
 rm -r $RUNDIR/$INSTANCE_NAME
 
-
+##########################################################################
