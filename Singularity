@@ -2,25 +2,25 @@ BootStrap: docker
 From: andersenlabapps/ivar
 
 %labels
-	Maintained by tomaz-mark.zorec@mf.uni-lj.si 
+	Maintained by tomaz-mark.zorec@mf.uni-lj.si.  
 
 %post
 	apt-get update
 	apt-get install -y wget \
-										 vim \
-										 gawk \
-										 unzip \
-										 curl \
-										 libncurses5-dev \
-										 zlib1g-dev \
-										 libbz2-dev \
-										 liblzma-dev \
-										 mafft \
-										 bwa \
-										 bowtie2 \
-										 trimmomatic \
-										 fastqc \
-										 seqtk \
+                       vim \
+					   gawk \
+					   unzip \
+					   curl \
+					   libncurses5-dev \
+					   zlib1g-dev \
+					   libbz2-dev \
+					   liblzma-dev \
+					   mafft \
+					   bwa \
+					   bowtie2 \
+					   trimmomatic \
+					   fastqc \
+					   seqtk 
 
 
 	apt-get install --fix-missing -y
@@ -58,6 +58,6 @@ From: andersenlabapps/ivar
 
 %environment
 	export PATH=/opt/anaconda3/bin:$PATH
-  export PATH=/opt/anaconda3/envs/bioinfo/bin:$PATH
+    export PATH=/opt/anaconda3/envs/bioinfo/bin:$PATH
 
 

@@ -1,5 +1,16 @@
 #!/bin/bash
 
-rm -r runs/*
-rm -r results/*
-rm -r logs/*
+export HOMEDIR=$(dirname "$0")
+export WORKDIR=$(pwd)
+export RUNDIR=$WORKDIR/runs
+export RESULTSDIR=$WORKDIR/results
+export LOGDIR=$WORKDIR/logs
+
+export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$1
+export DATA_ORIGIN=$2
+
+echo $HOMEDIR;
+
+rm -r $RUNDIR
+rm -r $RESULTSDIR
+rm -r $LOGDIR

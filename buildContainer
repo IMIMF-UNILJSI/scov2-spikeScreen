@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export HOMEDIR=$(dirname "$0")
+export WORKDIR=$(pwd)
+
+if [ $1 == "local"]; then
+	sudo singularity build $HOMEDIR/spikeScreenContainer.sif $HOMEDIR/Singularity
+else
+	singularity pull shub://fifthguy/spikeScreenContainer
+	mv spikeScreenContainer.sig $HOMEDIR/
+fi

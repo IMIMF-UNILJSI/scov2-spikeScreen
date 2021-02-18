@@ -1,14 +1,36 @@
 #!/bin/bash
 
-export HOMEDIR=$(pwd)
-export RUNDIR=$HOMEDIR/runs
-export RESULTSDIR=$HOMEDIR/results
-export LOGDIR=$HOMEDIR/logs
+export HOMEDIR=$(dirname "$0")
+export WORKDIR=$(pwd)
+export RUNDIR=$WORKDIR/runs
+export RESULTSDIR=$WORKDIR/results
+export LOGDIR=$WORKDIR/logs
 
-export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$1
-export DATA_ORIGIN=$2
+export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$2
+export DATA_ORIGIN=$3
 
-cp -r poolsPipeline $RUNDIR/${INSTANCE_NAME}
+
+echo $HOMEDIR;
+
+if [ ! -f "$HOMEDIR/spikeScreenContainer.sif" ]; then
+	$HOMEDIR/buildContainer local
+fi
+
+if [  ! -d "$RUNDIR" ]; then
+	mkdir $RUNDIR
+fi
+
+if [ ! -d "$RESULTSDIR" ]; then
+	mkdir $RESULTSDIR
+fi
+
+if [ ! -d "$LOGDIR" ]; then
+	mkdir $LOGDIR
+fi
+
+#########################################################################
+
+cp -r $HOMEDIR/poolsPipeline $RUNDIR/${INSTANCE_NAME}
 
 cp $DATA_ORIGIN/* $RUNDIR/$INSTANCE_NAME/Fastq/
 
@@ -18,7 +40,7 @@ cd $RUNDIR/${INSTANCE_NAME}
 
 cp -r results $RESULTSDIR/${INSTANCE_NAME}
 
-cd $HOMEFOLDER
+cd $WORKDIR
 
 rm -r $RUNDIR/$INSTANCE_NAME
 
