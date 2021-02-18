@@ -1,0 +1,313 @@
+#!/bin/bash
+
+########################################################################################################################################################
+########################################################################################################################################################
+########################################################################################################################################################
+
+echo "DEFINE FUNCTIONS"
+
+########################################################################################################################################################
+
+function LinkDataFolder () {
+	# LinkDataFolder source_folder target folder
+	
+	rm -r $2
+	ln -s $1 $2
+
+}
+
+########################################################################################################################################################
+
+function TrimReads () {
+	# TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER sample $REFERENCE_FOLDER
+
+	echo "TRIMMING READS"
+	TrimmomaticPE \
+		-threads 24 \
+		$1/${3}_*R1*.fastq.gz $1/${3}_*R2*.fastq.gz\
+		$2/${3}_R1.fastq.gz $2/${3}_U1.fastq.gz \
+		$2/${3}_R2.fastq.gz $2/${3}_U2.fastq.gz \
+		ILLUMINACLIP:$4/MyAdapters.fasta:2:30:10:2:keepBothReads \
+		LEADING:5 \
+		TRAILING:5 \
+		SLIDINGWINDOW:4:10 \
+		MINLEN:100
+	
+	zcat $2/${3}_U1.fastq.gz $2/${3}_U2.fastq.gz | gzip - > $2/${3}_S.fastq.gz
+	rm $2/${3}_U1.fastq.gz $2/${3}_U2.fastq.gz
+}
+
+########################################################################################################################################################
+
+function FastQC () {
+	#FastQC reads fastqc_out sample
+
+	echo "RUNING QC ON READS"
+	fastqc --threads 24 -o $2 $1/${3}*.fastq*
+
+}
+
+########################################################################################################################################################
+
+function IndexReference () {
+	# IndexReference $REFERENCE_FOLDER/reference.fa
+
+	echo "INDEXING REFERENCE SEQUENCE"
+	bwa index $1
+	samtools faidx $1
+	samtools dict ${1} > ${1%.fa}.dict
+}
+
+########################################################################################################################################################
+
+function Alignment () {
+	# Alignment $REFERENCE_FOLDER/reference.fa $TRIMMED_READS_FOLDER sample $MAPPINGS_FOLDER
+
+	echo "MAPPING READS TO REFERENCE"
+
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1' $1 $2/${3}_*R1*.fastq.gz $2/${3}*R2*.fastq.gz | \
+		samtools view --threads 24 -uhS -F3844 -f3 - | \
+		samtools sort --threads 24 -n  - |  \
+		samtools fixmate --threads 24 -m - $4/${3}_fixmate.bam 
+	samtools sort --threads 24 $4/${3}_fixmate.bam | \
+		samtools markdup -r --threads 24 - $4/${3}_nodup.bam 
+	samtools index $4/${3}_nodup.bam 
+	samtools calmd -Ar --threads 24 $4/${3}_nodup.bam $1 | \
+		samtools sort --threads 24 -o $4/${3}_nodup.baq.bam - 
+	samtools index $4/${3}_nodup.baq.bam 
+
+}
+
+
+########################################################################################################################################################
+
+function Alignment_2LIB () {
+	# Alignment $REFERENCE_FOLDER/reference.fa $TRIMMED_READS_FOLDER sample $MAPPINGS_FOLDER
+
+	# map reads 
+
+	echo "MAPPING READS TO REFERENCE (T1)"
+
+	sample1=${3}
+
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample1}_*R1*.fastq.gz $2/${sample1}_*R2*.fastq.gz | \
+		samtools view --threads 24 -uhS -F3844 -f3 - | \
+		samtools sort --threads 24 -n  - | \
+		samtools fixmate --threads 24 -m - $4/${sample1}_PE_fixmate.bam 
+	samtools sort --threads 24 $4/${sample1}_PE_fixmate.bam | \
+		samtools markdup -r --threads 24 - $4/${sample1}_PE_nodup.bam 
+	samtools index $4/${sample1}_PE_nodup.bam 
+
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample1}_*S*.fastq.gz | \
+		samtools view -uhS --threads 24 -F3844 - | \
+		samtools sort --threads 24 - |  \
+		samtools rmdup -s - $4/${sample1}_srmdup.bam
+	samtools sort --threads 24 -o $4/${sample1}_SE_nodup.bam $4/${sample1}_srmdup.bam
+	samtools index $4/${sample1}_SE_nodup.bam
+
+	samtools merge --threads 24 $4/${sample1}_nodup.bam $4/${sample1}_PE_nodup.bam $4/${sample1}_SE_nodup.bam
+	samtools index $4/${sample1}_nodup.bam
+
+	samtools calmd -Ar --threads 24 $4/${sample1}_nodup.bam $1 | \
+		samtools sort --threads 24 -o $4/${sample1}_nodup.baq.bam - 
+	samtools index $4/${sample1}_nodup.baq.bam 
+
+
+
+	echo "MAPPING READS TO REFERENCE (T2)"
+
+	sample2=T${3#P}
+
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample2}_*R1*.fastq.gz $2/${sample2}_*R2*.fastq.gz | \
+		samtools view --threads 24 -uhS -F3844 -f3 - | \
+		samtools sort --threads 24 -n  - | \
+		samtools fixmate --threads 24 -m - $4/${sample2}_PE_fixmate.bam 
+	samtools sort --threads 24 $4/${sample1}_PE_fixmate.bam | \
+		samtools markdup -r --threads 24 - $4/${sample2}_PE_nodup.bam 
+	samtools index $4/${sample2}_PE_nodup.bam 
+
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample2}_*S*.fastq.gz | \
+		samtools view -uhS --threads 24 -F3844 - | \
+		samtools sort --threads 24 - |  \
+		samtools rmdup -s - $4/${sample2}_srmdup.bam
+	samtools sort --threads 24 -o $4/${sample2}_SE_nodup.bam $4/${sample2}_srmdup.bam
+	samtools index $4/${sample2}_SE_nodup.bam
+
+	samtools merge --threads 24 $4/${sample2}_nodup.bam $4/${sample2}_PE_nodup.bam $4/${sample2}_SE_nodup.bam
+	samtools index $4/${sample2}_nodup.bam
+
+	samtools calmd -Ar --threads 24 $4/${sample2}_nodup.bam $1 | \
+		samtools sort --threads 24 -o $4/${sample2}_nodup.baq.bam - 
+	samtools index $4/${sample2}_nodup.baq.bam 
+
+
+	echo "MERGE TECH REPLICATE ALIGNMENTS"
+
+	samtools merge --threads 24 $4/${3}_merged.baq.bam $4/${sample1}_nodup.baq.bam $4/${sample2}_nodup.baq.bam
+	samtools index $4/${3}_merged.baq.bam
+
+
+
+}
+
+
+########################################################################################################################################################
+
+function GetStats () {
+	# GetStats $REFERENCE_FOLDER/reference.fa ($1)  sample ($2) $MAPPINGS_FOLDER ($3) $STATS_OUTPUT ($4)
+	# echo $sample $(samtools depth --reference $REFERENCE_FOLDER/reference.fa -a $MAPPINGS_FOLDER/${sample}_nodup.baq.bam 
+
+	samtools depth -d 0 --reference $1 -a $3/${2}_nodup.baq.bam > ${4}/${2}.coverage
+
+
+}
+
+########################################################################################################################################################
+
+function GetStats_2LIB () {
+	# GetStats $REFERENCE_FOLDER/reference.fa ($1)  sample ($2) $MAPPINGS_FOLDER ($3) $STATS_OUTPUT ($4)
+	# echo $sample $(samtools depth --reference $REFERENCE_FOLDER/reference.fa -a $MAPPINGS_FOLDER/${sample}_nodup.baq.bam 
+
+	samtools depth -d 0 --reference $1 -a $3/${2}_nodup.baq.bam > ${4}/${2}.coverage
+	samtools depth -d 0 --reference $1 -a $3/T${2#P}_nodup.baq.bam > ${4}/T${2#P}.coverage
+	samtools depth -d 0 --reference $1 -a $3/${2}_merged.baq.bam > ${4}/${2}_merged.coverage
+
+
+}
+
+########################################################################################################################################################
+
+function GetStats_2LIB_selection () {
+	# GetStats $REFERENCE_FOLDER/reference.fa ($1)  sample ($2) $MAPPINGS_FOLDER ($3) $STATS_OUTPUT ($4) $SpikeCOORDS ($5)
+	# echo $sample $(samtools depth --reference $REFERENCE_FOLDER/reference.fa -a $MAPPINGS_FOLDER/${sample}_nodup.baq.bam 
+
+	samtools depth -d 0 --reference $1 -r $5 -a $3/${2}_nodup.baq.bam > ${4}/${2}.coverage
+	samtools depth -d 0 --reference $1 -r $5 -a $3/T${2#P}_nodup.baq.bam > ${4}/T${2#P}.coverage
+	samtools depth -d 0 --reference $1 -r $5 -a $3/${2}_merged.baq.bam > ${4}/${2}_merged.coverage
+
+
+}
+
+########################################################################################################################################################
+
+function IvarVariants_2LIB () {
+	# IvarVariants $REFERENCE_FOLDER/reference.fa ($1) $MAPPINGS_FOLDER ($2) $sample ($3) $IVAR_VARIANTS ($4) $VARIANTS_FOLDER ($5)
+
+	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference ${1} ${2}/${3}_nodup.baq.bam | ivar variants -p ${4}/${3}_nodup.raw -t 0.0000 -q 20 -m 10 -r ${1} -g ${1%.fa}.gff
+	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference ${1} ${2}/T${3#P}_nodup.baq.bam | ivar variants -p ${4}/T${3#P}_nodup.raw -t 0.0000 -q 20 -m 10 -r ${1} -g ${1%.fa}.gff
+	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference ${1} ${2}/${3}_merged.baq.bam | ivar variants -p ${4}/${3}_merged.raw -t 0.0000 -q 20 -m 10 -r ${1} -g ${1%.fa}.gff
+
+	
+	# ivar filtervariants -p $4/${3}_intersection.raw $4/${3}_nodup.raw.tsv $4/T${3#P}_nodup.raw.tsv $4/${3}_merged.raw.tsv
+	./intersect_ivar_variants.py -f1 $4/${3}_nodup.raw.tsv -f2 $4/T${3#P}_nodup.raw.tsv -fm $4/${3}_merged.raw.tsv -o $4/${3}_intersection.raw.tsv
+
+	./ivar_variants_to_vcf.py $4/${3}_nodup.raw.tsv $5/${3}_nodup.raw.vcf
+	./ivar_variants_to_vcf.py $4/T${3#P}_nodup.raw.tsv $5/T${3#P}_nodup.raw.vcf
+	./ivar_variants_to_vcf.py $4/${3}_merged.raw.tsv $5/${3}_merged.raw.vcf
+	./ivar_variants_to_vcf.py $4/${3}_intersection.raw.tsv $5/${3}_intersection.raw.vcf
+
+}
+
+########################################################################################################################################################
+
+function IvarVariants () {
+	# IvarVariants $REFERENCE_FOLDER/reference.fa ($1) $MAPPINGS_FOLDER ($2) $sample ($3) $IVAR_VARIANTS ($4)
+
+	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference ${1} ${2}/${3}_nodup.baq.bam | ivar variants -p ${4}/${3}_nodup.raw -t 0.001 -q 20 -m 10 -r ${1} -g ${1%.fa}.gff
+
+}
+
+########################################################################################################################################################
+
+function subfunctionAwkNEndTrimming () {
+		# subfunctionAwkNEndTrimming STDIN/STDOUT (pipein/pipeout)
+		awk '{
+		header=$0;
+		getline;
+		for(five_prime=1;five_prime<length($1)-5;five_prime++) {
+		    s=substr($1,five_prime,25);
+		    if(index(s,"N")==0) break;
+		}
+		for(three_prime=length($1)-4;three_prime>five_prime;three_prime--) {
+		    s=substr($1,three_prime,25);
+		    if(index(s,"N")==0) break;
+		}
+		printf("%s\n%s\n",header,substr($1,five_prime,three_prime-five_prime+5));
+	}' $1
+}
+
+########################################################################################################################################################
+
+function GetConsensus () {
+	# GetConsensus $REFERENCE $MAPPINGS_FOLDER $sample $CONSENSI $CONSOUT
+
+	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference $1 $2/${3}_merged.baq.bam  | ivar consensus -p $4/${3} -t 0.5 -q 20 -m 10
+
+
+	
+	seqtk seq -l 100000000000 $4/${3}.fa | \
+		subfunctionAwkNEndTrimming | \
+		tr "?RYSWKMBDHVN.ryswkmbdhvn" "N" | \
+		tr -d "-" | \
+		tr [:lower:] [:upper:] | grep -iv ">" - > tmp.sequence
+
+	echo ">"$3 > $5/${3}.fa
+	cat tmp.sequence >> $5/${3}.fa 
+
+}
+
+
+########################################################################################################################################################
+ function InitSnpEff () {
+ 	# download snp eff database for reference
+ 	#  InitSnpEff $SNPEFF_INIT ($1) $REFERENCE_NAME ($2)
+
+ 	rm -r $1
+ 	mkdir $1
+ 	
+ 	snpEff download -dataDir $1 $2
+
+ }
+
+########################################################################################################################################################
+
+function AnnotateVariants () {
+	# AnnotateVariants $HOMEFOLDER $REFERENCE_FOLDER $VARIANTS_FOLDER sample $ANNOTATIONS_FOLDER $SNPEFF_INIT $REFERENCE_NAME
+
+	echo "CALL VARIANT CONSEQUENCES - SNPEFF"
+
+	cd $2
+
+	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_nodup.raw.vcf > $5/${4}_nodup.raw.ann.vcf
+
+	cd $1
+}
+
+########################################################################################################################################################
+
+function AnnotateVariants_2LIB () {
+	# AnnotateVariants $HOMEFOLDER $REFERENCE_FOLDER $VARIANTS_FOLDER sample $ANNOTATIONS_FOLDER $SNPEFF_INIT $REFERENCE_NAME
+
+	echo "CALL VARIANT CONSEQUENCES - SNPEFF"
+
+	cd $2
+
+
+	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_nodup.raw.vcf > $5/${4}_nodup.raw.ann.vcf
+	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/T${4#P}_nodup.raw.vcf > $5/T${4#P}_nodup.raw.ann.vcf
+	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_merged.raw.vcf > $5/${4}_merged.raw.ann.vcf
+	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_intersection.raw.vcf > $5/${4}_intersection.raw.ann.vcf
+
+	cd $1
+}
+
+
+########################################################################################################################################################
+
+
+########################################################################################################################################################
+########################################################################################################################################################
+########################################################################################################################################################
+
+
+

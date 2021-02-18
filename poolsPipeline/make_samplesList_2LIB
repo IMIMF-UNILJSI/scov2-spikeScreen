@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in $(ls Fastq | awk -F"_" '{print $1}' - | sort -n | uniq); do
+	a=${i#T}
+	b=${a#P}
+	c=P$b
+	echo $c
+done | sort -n | uniq > samples_list

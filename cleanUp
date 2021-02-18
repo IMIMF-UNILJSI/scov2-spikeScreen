@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -r runs/*
+rm -r results/*
+rm -r logs/*

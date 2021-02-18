@@ -1,0 +1,25 @@
+#!/bin/bash
+
+export HOMEDIR=$(pwd)
+export RUNDIR=$HOMEDIR/runs
+export RESULTSDIR=$HOMEDIR/results
+export LOGDIR=$HOMEDIR/logs
+
+export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$1
+export DATA_ORIGIN=$2
+
+cp -r poolsPipeline $RUNDIR/${INSTANCE_NAME}
+
+cp $DATA_ORIGIN/* $RUNDIR/$INSTANCE_NAME/Fastq/
+
+cd $RUNDIR/${INSTANCE_NAME}
+
+./procedure_2LIB_consensus 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
+
+cp -r results $RESULTSDIR/${INSTANCE_NAME}
+
+cd $HOMEFOLDER
+
+rm -r $RUNDIR/$INSTANCE_NAME
+
+
