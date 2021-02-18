@@ -29,6 +29,7 @@ fi
 
 cp -r $HOMEDIR/poolsPipeline $RUNDIR/${INSTANCE_NAME}
 
+mkdir $RUNDIR/$INSTANCE_NAME/Fastq
 cp $DATA_ORIGIN/* $RUNDIR/$INSTANCE_NAME/Fastq/
 
 cd $RUNDIR/${INSTANCE_NAME}
