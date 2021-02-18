@@ -17,6 +17,7 @@ def parse_args(args=None):
 	parser.add_argument('-i', '--ivar_folder', dest="ivar_folder", default="ivar_variants", help="Where is the ivar folder?")
 	parser.add_argument('-x', '--mutations_prefix', default="allMutations", dest="mutations", help="How to name my mutations output?")
 	parser.add_argument('-c', '--intersection', default=True, type=bool, dest="intersection", help="Use intersections?")
+	parser.add_argument('-s', '--selection', dest="selection", help="Where do i put the mutation occurence table?")
 
 
 	return parser.parse_args(args)

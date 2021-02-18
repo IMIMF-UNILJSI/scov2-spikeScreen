@@ -2,3 +2,5 @@ results
 runs
 logs
 spikeScreenContainer.sif
+*.backup
+*.bak

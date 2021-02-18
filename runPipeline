@@ -40,6 +40,6 @@ cp -r results $RESULTSDIR/${INSTANCE_NAME}
 
 cd $WORKDIR
 
-rm -r $RUNDIR/$INSTANCE_NAME
+# rm -r $RUNDIR/$INSTANCE_NAME
 
 ##########################################################################
