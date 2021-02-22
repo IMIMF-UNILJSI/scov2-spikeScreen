@@ -1,5 +1,5 @@
 BootStrap: docker
-From: andersenlabapps/ivar
+From: andersenlabapps/ivar:1.3.1
 
 %labels
 	Maintained by tomaz-mark.zorec@mf.uni-lj.si.  
@@ -55,12 +55,13 @@ From: andersenlabapps/ivar
                      pilon=1.23 \
                      snpeff=5.0 \
                      bbmap
+  # mountpoint
+  mkdir /opt/scripts
 
 %environment
 	export PATH=/opt/anaconda3/bin:$PATH
   export PATH=/opt/anaconda3/envs/bioinfo/bin:$PATH
 
-  # mountpoint
-  mkdir /opt/scripts
+
 
 

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ls Fastq | awk -F"_" '{print $1}' - | sort -n | uniq > samples_list
+
