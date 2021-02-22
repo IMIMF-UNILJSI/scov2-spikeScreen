@@ -32,7 +32,7 @@ export SNPEFF_INIT=$HOMEFOLDER/snpeff_home
 
 export DATA_FOLDER=$HOMEFOLDER/data
 
-export SpikeCOORDS=NC_045512.2:21563-25384
+# export SpikeCOORDS=NC_045512.2:21563-25384
 
 
 
@@ -117,7 +117,7 @@ for sample in $(cat samples_list); do
 	### MAPPING 
 
 	Alignment_2LIB $REFERENCE_FOLDER/reference.fa $TRIMMED_READS_FOLDER $sample $MAPPINGS_FOLDER
-	GetStats_2LIB_selection $REFERENCE_FOLDER/reference.fa $sample $MAPPINGS_FOLDER $STATS_OUTPUT $SpikeCOORDS
+	GetStats_2LIB $REFERENCE_FOLDER/reference.fa $sample $MAPPINGS_FOLDER $STATS_OUTPUT $SpikeCOORDS
 
 
 	## Variation Ivar
@@ -131,7 +131,7 @@ done
 
 # summarize to images, tables
 ./coverage_analysis.py
-./variant_analysis.py
+./variant_analysis_unsorted.py
 
 
 #zip output
@@ -143,15 +143,22 @@ zip $RESULTSFOLDER/ivar_variants.zip ivar_variants/*
 zip $RESULTSFOLDER/annotated.zip annotated/*
 zip $RESULTSFOLDER/coverage.zip coverages_raw *covPerc* *coverage.png *coverage.pdf
 zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx
+zip $RESULTSFOLDER/sequences.zip 
 
 ########################################################################################################################################################
 
-# for sample in $(cat samples_list); do 
-# 	echo $sample 
-# 	GetConsensus $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $CONSENSUS $CONSOUT
-# done
+for sample in $(cat samples_list); do 
+	echo $sample 
+	GetConsensus $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $CONSENSUS $CONSOUT
+done
 
-# cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
+cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
+
+seqtk comp consensus_sequences.fasta > consensus_sequences.dat
+
 
 # ########################################################################################################################################################
+
+zip $RESULTSFOLDER/consensi.zip consensi/*
+zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
 
