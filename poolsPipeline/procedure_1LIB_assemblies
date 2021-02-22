@@ -165,5 +165,8 @@ done
 
 cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
 
-# ########################################################################################################################################################
+########################################################################################################################################################
+
+zip $RESULTSFOLDER/consensi.zip consensi/*
+zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
 

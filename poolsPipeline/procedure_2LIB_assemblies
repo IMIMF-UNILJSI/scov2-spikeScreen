@@ -155,7 +155,6 @@ zip $RESULTSFOLDER/ivar_variants.zip ivar_variants/*
 zip $RESULTSFOLDER/annotated.zip annotated/*
 zip $RESULTSFOLDER/coverage.zip coverages_raw *covPerc* *coverage.png *coverage.pdf
 zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx
-zip $RESULTSFOLDER/sequences.zip 
 
 ########################################################################################################################################################
 
@@ -169,7 +168,7 @@ cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
 seqtk comp consensus_sequences.fasta > consensus_sequences.dat
 
 
-# ########################################################################################################################################################
+########################################################################################################################################################
 
 zip $RESULTSFOLDER/consensi.zip consensi/*
 zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
