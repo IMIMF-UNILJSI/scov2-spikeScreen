@@ -3,7 +3,7 @@
 export HOMEDIR=$(dirname "$0")
 export WORKDIR=$(pwd)
 
-if [ '$1' != 'web' ]; then
+if [ $1 != web ]; then
 	singularity build --fakeroot $HOMEDIR/spikeScreenContainer.sif $HOMEDIR/Singularity
 else
 	singularity pull shub://fifthguy/spikeScreenContainer

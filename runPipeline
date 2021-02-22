@@ -6,8 +6,8 @@ export RUNDIR=$WORKDIR/runs
 export RESULTSDIR=$WORKDIR/results
 export LOGDIR=$WORKDIR/logs
 
-export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-$1
-export DATA_ORIGIN=$2
+export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-${2}-${1}
+export DATA_ORIGIN=$3
 
 ########################################################################
 
@@ -34,7 +34,11 @@ cp $DATA_ORIGIN/* $RUNDIR/$INSTANCE_NAME/Fastq/
 
 cd $RUNDIR/${INSTANCE_NAME}
 
-./procedure_2LIB_consensus 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
+if [ $2 == pools ]; then
+	./procedure_2LIB_Spools 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
+elif [ $2 == assemblies ]; then
+	./procedure_2LIB_assemblies 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
+fi
 
 cp -r results $RESULTSDIR/${INSTANCE_NAME}
 
