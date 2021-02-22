@@ -28,6 +28,16 @@ fi
 
 #########################################################################
 
+if [ -d "$RUNDIR/$INSTANCE_NAME" ]; then
+    rm -r $RUNDIR/$INSTANCE_NAME
+fi
+
+if [ -d "$RESULTSDIR/$INSTANCE_NAME" ]; then
+    rm -r $RESULTSDIR/$INSTANCE_NAME
+fi
+
+#########################################################################
+
 cp -r $HOMEDIR/poolsPipeline $RUNDIR/${INSTANCE_NAME}
 
 mkdir $RUNDIR/$INSTANCE_NAME/Fastq
