@@ -1,0 +1,157 @@
+#!/bin/bash
+
+
+########################################################################################################################################################
+########################################################################################################################################################
+########################################################################################################################################################
+
+
+echo "PREPARE VARIABLES AND SOURCE FUNCTIONS FILE"
+
+export HOMEFOLDER=$(pwd)
+
+source $HOMEFOLDER/functions
+
+export RESULTSFOLDER=$HOMEFOLDER/results
+
+
+export MAPPINGS_FOLDER=$HOMEFOLDER/mappings 
+export VARIANTS_FOLDER=$HOMEFOLDER/variants 
+export ANNOTATED_FOLDER=$HOMEFOLDER/annotated
+export STATS_OUTPUT=$HOMEFOLDER/stats
+export IVAR_VARIANTS=$HOMEFOLDER/ivar_variants
+export TRIMMED_READS_FOLDER=$HOMEFOLDER/trimmed_reads
+export QC_RAW_FOLDER=$HOMEFOLDER/qc_raw
+export QC_TRIMMED_FOLDER=$HOMEFOLDER/qc_trimmed
+
+export CONSENSUS=$HOMEFOLDER/consensus
+export CONSOUT=$HOMEFOLDER/consout
+
+export REFERENCE_FOLDER=$HOMEFOLDER/reference
+export SNPEFF_INIT=$HOMEFOLDER/snpeff_home
+
+export DATA_FOLDER=$HOMEFOLDER/data
+
+export SpikeCOORDS=NC_045512.2:21563-25384
+
+
+
+
+
+#######################################################################################################################################################
+#######################################################################################################################################################
+#######################################################################################################################################################
+
+echo "PREPARE FILESYSTEM"
+
+rm -r $MAPPINGS_FOLDER; mkdir $MAPPINGS_FOLDER 
+rm -r $VARIANTS_FOLDER; mkdir $VARIANTS_FOLDER 
+rm -r $ANNOTATED_FOLDER; mkdir $ANNOTATED_FOLDER
+rm -r $STATS_OUTPUT; mkdir $STATS_OUTPUT
+rm -r $IVAR_VARIANTS; mkdir $IVAR_VARIANTS  
+rm -r $TRIMMED_READS_FOLDER; mkdir $TRIMMED_READS_FOLDER
+rm -r $QC_RAW_FOLDER; mkdir $QC_RAW_FOLDER
+rm -r $QC_TRIMMED_FOLDER; mkdir $QC_TRIMMED_FOLDER
+rm -r $CONSENSUS; mkdir $CONSENSUS
+rm -r $CONSOUT; mkdir $CONSOUT
+rm -r $RESULTSFOLDER; mkdir $RESULTSFOLDER
+
+# Link the data to the standard data folder location
+
+LinkDataFolder $HOMEFOLDER/Fastq $DATA_FOLDER # Change this line (FASTQ folder must be physically present, not a link!)
+
+bash $HOMEFOLDER/make_samplesList_2LIB
+
+
+########################################################################################################################################################
+########################################################################################################################################################
+########################################################################################################################################################
+
+echo "########################################################"
+echo "#################### TRIMMING & QC #####################"
+echo "########################################################"
+
+
+for sample in $(cat samples_list); do
+
+ 	echo "########################################################"
+	echo "###################### $sample #########################"
+	echo "########################################################"
+
+ 	### TRIMMING AND QUALITY CONTROL
+
+ 	FastQC $DATA_FOLDER $QC_RAW_FOLDER $sample
+ 	TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER $sample $REFERENCE_FOLDER
+ 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER $sample
+
+ 	#second lib
+
+ 	FastQC $DATA_FOLDER $QC_RAW_FOLDER T${sample#P}
+ 	TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER T${sample#P} $REFERENCE_FOLDER
+ 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER T${sample#P}
+
+done
+
+# zip output
+zip $RESULTSFOLDER/Fastq.zip Fastq/*
+zip $RESULTSFOLDER/qc_raw.zip qc_raw/*
+zip $RESULTSFOLDER/trimmed_reads.zip trimmed_reads/*
+zip $RESULTSFOLDER/qc_trimmed.zip qc_trimmed/*
+
+# ########################################################################################################################################################
+
+echo "########################################################"
+echo "################ MAPPING & VARIANTS ####################"
+echo "########################################################"
+
+IndexReference $REFERENCE_FOLDER/reference.fa
+
+rm -r coverages_raw
+
+for sample in $(cat samples_list); do
+
+	echo "########################################################"
+	echo "######################## $sample #######################"
+	echo "########################################################"
+
+	### MAPPING 
+
+	Alignment_2LIB $REFERENCE_FOLDER/reference.fa $TRIMMED_READS_FOLDER $sample $MAPPINGS_FOLDER
+	GetStats_2LIB_selection $REFERENCE_FOLDER/reference.fa $sample $MAPPINGS_FOLDER $STATS_OUTPUT $SpikeCOORDS
+
+
+	## Variation Ivar
+	IvarVariants_2LIB $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $IVAR_VARIANTS $VARIANTS_FOLDER
+	AnnotateVariants_2LIB $HOMEFOLDER $REFERENCE_FOLDER $VARIANTS_FOLDER $sample $ANNOTATED_FOLDER $SNPEFF_INIT NC_045512.2
+
+  ## collect mean/sd cov data
+  echo $sample $(cat $STATS_OUTPUT/${sample}.coverage | awk '{sum+=$3; sumsq+=$3*$3} END { print sum/NR,sqrt(sumsq/NR - (sum/NR)**2)  }' - ) >> coverages_raw;
+
+done
+
+# summarize to images, tables
+./coverage_analysis.py
+./variant_analysis.py
+
+
+#zip output
+
+zip $RESULTSFOLDER/stats.zip stats/*
+zip $RESULTSFOLDER/mappings.zip mappings/*
+zip $RESULTSFOLDER/variants.zip variants/*
+zip $RESULTSFOLDER/ivar_variants.zip ivar_variants/*
+zip $RESULTSFOLDER/annotated.zip annotated/*
+zip $RESULTSFOLDER/coverage.zip coverages_raw *covPerc* *coverage.png *coverage.pdf
+zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx
+
+########################################################################################################################################################
+
+# for sample in $(cat samples_list); do 
+# 	echo $sample 
+# 	GetConsensus $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $CONSENSUS $CONSOUT
+# done
+
+# cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
+
+# ########################################################################################################################################################
+
