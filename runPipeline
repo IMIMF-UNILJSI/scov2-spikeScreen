@@ -6,7 +6,8 @@ export RUNDIR=$WORKDIR/runs
 export RESULTSDIR=$WORKDIR/results
 export LOGDIR=$WORKDIR/logs
 
-export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-${2}-${1}
+# export INSTANCE_NAME=$(date +"%Y%m%d%H%M%S")-${2}-${1}
+export INSTANCE_NAME=${1}-${2}
 export DATA_ORIGIN=$3
 
 ########################################################################
