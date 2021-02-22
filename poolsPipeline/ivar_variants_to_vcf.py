@@ -1,5 +1,16 @@
 #!/usr/bin/env python
 
+###########################################################################
+###########################################################################
+"""
+This script was obtained from 
+https://github.com/nf-core/viralrecon.git/bin/ivar_variants_to_vcf.py 
+and is subject to the licence of the original source.
+
+"""
+###########################################################################
+###########################################################################
+
 import os
 import sys
 import re

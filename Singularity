@@ -1,5 +1,5 @@
 BootStrap: docker
-From: andersenlabapps/ivar
+From: andersenlabapps/ivar:1.3.1
 
 %labels
 	Maintained by tomaz-mark.zorec@mf.uni-lj.si.  
@@ -7,20 +7,20 @@ From: andersenlabapps/ivar
 %post
 	apt-get update
 	apt-get install -y wget \
-                       vim \
-					   gawk \
-					   unzip \
-					   curl \
-					   libncurses5-dev \
-					   zlib1g-dev \
-					   libbz2-dev \
-					   liblzma-dev \
-					   mafft \
-					   bwa \
-					   bowtie2 \
-					   trimmomatic \
-					   fastqc \
-					   seqtk 
+                     vim \
+					           gawk \
+					           unzip \
+					           curl \
+					           libncurses5-dev \
+					           zlib1g-dev \
+					           libbz2-dev \
+					           liblzma-dev \
+					           mafft \
+					           bwa \
+					           bowtie2 \
+					           trimmomatic \
+					           fastqc \
+					           seqtk 
 
 
 	apt-get install --fix-missing -y
@@ -39,7 +39,7 @@ From: andersenlabapps/ivar
 
 
   conda create -y -n bioinfo \
-                     biopython=1.78\
+                     biopython=1.78 \
                      seqtk=1.3 \
                      seqkit=0.15.0 \
                      samtools=1.9 \
@@ -55,9 +55,13 @@ From: andersenlabapps/ivar
                      pilon=1.23 \
                      snpeff=5.0 \
                      bbmap
+  # mountpoint
+  mkdir /opt/scripts
 
 %environment
 	export PATH=/opt/anaconda3/bin:$PATH
-    export PATH=/opt/anaconda3/envs/bioinfo/bin:$PATH
+  export PATH=/opt/anaconda3/envs/bioinfo/bin:$PATH
+
+
 
 

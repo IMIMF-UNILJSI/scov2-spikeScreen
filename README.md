@@ -1,4 +1,5 @@
 # scov2-spikeScreen
+
 SCOV2-spikeScreen IMI prototype bash pipeline
 
 ## build container
@@ -15,9 +16,9 @@ no argument defaults to "web", local requires sudo privileges. If none of the op
 
 Create a working dir somewhere in your FS (preferably outside of the git dir), run:
 
-singularity run --bind /path/to/repo/directory:/opt,/path/to/data:/mnt /path/to/repo/directory/spikeScreenContainer.sif /opt/runPipeline runID keyword /mnt
+singularity run --bind /path/to/repo/directory:/opt/scripts,/path/to/data:/mnt /path/to/repo/directory/spikeScreenContainer.sif /opt/scripts/runPipeline runID keyword /mnt
 
-The second argument (keyword) should be replaced with either pools/assemblies/nib to run the appropriate analysis (self explanatory).
+The second argument (keyword) should be replaced with either pools/assemblies/pools_single/assemblies_single to run the appropriate analysis (self explanatory).
 
 ## Cleanup
 

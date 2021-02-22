@@ -164,6 +164,17 @@ function GetStats () {
 
 ########################################################################################################################################################
 
+function GetStats_selection () {
+	# GetStats $REFERENCE_FOLDER/reference.fa ($1)  sample ($2) $MAPPINGS_FOLDER ($3) $STATS_OUTPUT ($4)
+	# echo $sample $(samtools depth --reference $REFERENCE_FOLDER/reference.fa -a $MAPPINGS_FOLDER/${sample}_nodup.baq.bam 
+
+	samtools depth -d 0 --reference $1 -r $5 -a $3/${2}_nodup.baq.bam > ${4}/${2}.coverage
+
+
+}
+
+########################################################################################################################################################
+
 function GetStats_2LIB () {
 	# GetStats $REFERENCE_FOLDER/reference.fa ($1)  sample ($2) $MAPPINGS_FOLDER ($3) $STATS_OUTPUT ($4)
 	# echo $sample $(samtools depth --reference $REFERENCE_FOLDER/reference.fa -a $MAPPINGS_FOLDER/${sample}_nodup.baq.bam 
@@ -214,6 +225,8 @@ function IvarVariants () {
 	# IvarVariants $REFERENCE_FOLDER/reference.fa ($1) $MAPPINGS_FOLDER ($2) $sample ($3) $IVAR_VARIANTS ($4)
 
 	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference ${1} ${2}/${3}_nodup.baq.bam | ivar variants -p ${4}/${3}_nodup.raw -t 0.001 -q 20 -m 10 -r ${1} -g ${1%.fa}.gff
+
+	./ivar_variants_to_vcf.py $4/${3}_nodup.raw.tsv $5/${3}_nodup.raw.vcf
 
 }
 
