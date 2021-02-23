@@ -137,7 +137,7 @@ for sample in $(cat samples_list); do
 done
 
 # summarize to images, tables
-./coverage_analysis.py -p cg
+./coverage_analysis.py --prefix cg --runmerged=false
 ./variant_analysis.py --timepointsort=false --intersection=false --mutations_prefix=allMutations_individual 
 
 
