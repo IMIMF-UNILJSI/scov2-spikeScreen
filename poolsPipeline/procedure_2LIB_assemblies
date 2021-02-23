@@ -142,7 +142,7 @@ for sample in $(cat samples_list); do
 done
 
 # summarize to images, tables
-./coverage_analysis.py
+./coverage_analysis.py -p cg
 ./variant_analysis_unsorted.py
 
 
