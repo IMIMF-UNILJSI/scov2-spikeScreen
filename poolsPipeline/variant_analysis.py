@@ -84,7 +84,9 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 	
 	return data
 
-def create_mutationOccurenceTables()
+# def create_mutationOccurenceTables():
+
+	
 
 
 def main(args=None):
