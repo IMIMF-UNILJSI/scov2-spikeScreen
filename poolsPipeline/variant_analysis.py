@@ -16,16 +16,17 @@ def parse_args(args=None):
 	parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
 	parser.add_argument('-i', '--ivar_folder', dest='ivar_folder', default='ivar_variants', help='Where is the ivar folder?')
 	parser.add_argument('-x', '--mutations_prefix', default='allMutations', dest='mutations', help='How to name my mutations output?')
-	parser.add_argument('-c', '--intersection', default=True, type=bool, dest='intersection', help='Use intersections?')
-	parser.add_argument('-t', '--timepointsort', dest='timepointsort', default=True, type=bool, help='Should I sort the tables by timepoint? (not applicable for assemblies)')
+	parser.add_argument('-c', '--intersection', default="True", type=str, dest='intersection', help='Use intersections?')
+	parser.add_argument('-t', '--timepointsort', dest='timepointsort', default="True", type=str, help='Should I sort the tables by timepoint? (not applicable for assemblies)')
 
 	parser.add_argument('-s', '--selection', dest='selection', help='Where do i put the mutation occurence table?')
 
 	return parser.parse_args(args)
 
 def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepointsort):
-	if intersection == True:
-		if timepointsort == True:
+	print(intersection)
+	if intersection == "True":
+		if timepointsort == "True":
 			flst = sorted(
 				[
 					fl for fl in os.listdir(ivar_folder) if fl.endswith('.raw.tsv') and fl.rstrip('.raw.tsv').endswith('_intersection')
@@ -38,7 +39,7 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 					fl for fl in os.listdir(ivar_folder) if fl.endswith('.raw.tsv') and fl.rstrip('.raw.tsv').endswith('_intersection')
 				])
 	else:
-		if timepointsort == True:
+		if timepointsort == "True":
 			flst = sorted(
 				[
 					fl for fl in os.listdir(ivar_folder) if fl.endswith('.raw.tsv') and fl.rstrip('.raw.tsv').endswith('_nodup')
@@ -53,7 +54,7 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 
 	samples = [fl.rstrip('.tsv').rstrip('.raw').rstrip('_nodup').rstrip('_intersection') for fl in flst]
 	data = []
-	
+	print(samples)
 	for (fl, sample) in zip(*(flst, samples)):
 		with open(ivar_folder + '/'+fl) as fin:
 			header = fin.readline().strip().split()
@@ -63,12 +64,11 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 				data += [[sample] + [timepoint] + ['|'.join(line[0:4])] + line for line in lines]
 			else:
 				data += [[sample] + ['|'.join(line[0:4])] + line for line in lines]
-
+	header = header
 	if timepointsort == True:
 		header = ['Sample', 'Timepoint', 'Uniq'] + header  
 	else: 
 		header = ['Sample', 'Uniq'] + header
-	# filter data
 
 	data = pd.DataFrame(data, columns=header)
 	
@@ -86,7 +86,7 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 
 # def create_mutationOccurenceTables():
 
-	
+
 
 
 def main(args=None):

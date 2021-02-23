@@ -97,11 +97,6 @@ for sample in $(cat samples_list); do
  	TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER $sample $REFERENCE_FOLDER
  	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER $sample
 
- 	#second lib
-
- 	FastQC $DATA_FOLDER $QC_RAW_FOLDER T${sample#P}
- 	TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER T${sample#P} $REFERENCE_FOLDER
- 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER T${sample#P}
 
 done
 
@@ -144,7 +139,7 @@ done
 
 # summarize to images, tables
 ./coverage_analysis.py
-./variant_analysis.py --timepointsort True --intersection False --mutations_prefix allMutations_individual 
+./variant_analysis.py --timepointsort=true --intersection=false --mutations_prefix=allMutations_individual 
 
 
 

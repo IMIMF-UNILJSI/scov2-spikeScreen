@@ -143,9 +143,8 @@ done
 
 # summarize to images, tables
 ./coverage_analysis.py
-./variant_analysis.py --timepointsort True --intersection True --mutations_prefix allMutations_intersection 
-./variant_analysis.py --timepointsort True --intersection False --mutations_prefix allMutations_individual 
-
+./variant_analysis.py --timepointsort=true --intersection=true --mutations_prefix=allMutations_intersection 
+./variant_analysis.py --timepointsort=true --intersection=false --mutations_prefix=allMutations_individual 
 
 
 #zip output

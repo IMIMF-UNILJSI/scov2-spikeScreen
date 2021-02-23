@@ -63,18 +63,31 @@ function IndexReference () {
 function Alignment () {
 	# Alignment $REFERENCE_FOLDER/reference.fa $TRIMMED_READS_FOLDER sample $MAPPINGS_FOLDER
 
-	echo "MAPPING READS TO REFERENCE"
+	echo "MAPPING READS TO REFERENCE (T1)"
 
-	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1' $1 $2/${3}_*R1*.fastq.gz $2/${3}*R2*.fastq.gz | \
+	sample1=${3}
+
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample1}_*R1*.fastq.gz $2/${sample1}_*R2*.fastq.gz | \
 		samtools view --threads 24 -uhS -F3844 -f3 - | \
-		samtools sort --threads 24 -n  - |  \
-		samtools fixmate --threads 24 -m - $4/${3}_fixmate.bam 
-	samtools sort --threads 24 $4/${3}_fixmate.bam | \
-		samtools markdup -r --threads 24 - $4/${3}_nodup.bam 
-	samtools index $4/${3}_nodup.bam 
-	samtools calmd -Ar --threads 24 $4/${3}_nodup.bam $1 | \
-		samtools sort --threads 24 -o $4/${3}_nodup.baq.bam - 
-	samtools index $4/${3}_nodup.baq.bam 
+		samtools sort --threads 24 -n  - | \
+		samtools fixmate --threads 24 -m - $4/${sample1}_PE_fixmate.bam 
+	samtools sort --threads 24 $4/${sample1}_PE_fixmate.bam | \
+		samtools markdup -r --threads 24 - $4/${sample1}_PE_nodup.bam 
+	samtools index $4/${sample1}_PE_nodup.bam 
+
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample1}_*S*.fastq.gz | \
+		samtools view -uhS --threads 24 -F3844 - | \
+		samtools sort --threads 24 - |  \
+		samtools rmdup -s - $4/${sample1}_srmdup.bam
+	samtools sort --threads 24 -o $4/${sample1}_SE_nodup.bam $4/${sample1}_srmdup.bam
+	samtools index $4/${sample1}_SE_nodup.bam
+
+	samtools merge --threads 24 $4/${sample1}_nodup.bam $4/${sample1}_PE_nodup.bam $4/${sample1}_SE_nodup.bam
+	samtools index $4/${sample1}_nodup.bam
+
+	samtools calmd -Ar --threads 24 $4/${sample1}_nodup.bam $1 | \
+		samtools sort --threads 24 -o $4/${sample1}_nodup.baq.bam - 
+	samtools index $4/${sample1}_nodup.baq.bam 
 
 }
 
