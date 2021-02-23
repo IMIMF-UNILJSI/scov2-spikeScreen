@@ -162,7 +162,7 @@ zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx
 
 for sample in $(cat samples_list); do 
 	echo $sample 
-	GetConsensus $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $CONSENSUS $CONSOUT
+	GetConsensus_2LIB $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $CONSENSUS $CONSOUT
 done
 
 cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta

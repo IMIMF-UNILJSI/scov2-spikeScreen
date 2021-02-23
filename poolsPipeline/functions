@@ -251,10 +251,30 @@ function subfunctionAwkNEndTrimming () {
 
 ########################################################################################################################################################
 
-function GetConsensus () {
+function GetConsensus_2LIB () {
 	# GetConsensus $REFERENCE $MAPPINGS_FOLDER $sample $CONSENSI $CONSOUT
 
 	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference $1 $2/${3}_merged.baq.bam  | ivar consensus -p $4/${3} -t 0.5 -q 20 -m 10
+
+
+	
+	seqtk seq -l 100000000000 $4/${3}.fa | \
+		subfunctionAwkNEndTrimming | \
+		tr "?RYSWKMBDHVN.ryswkmbdhvn" "N" | \
+		tr -d "-" | \
+		tr [:lower:] [:upper:] | grep -iv ">" - > tmp.sequence
+
+	echo ">"$3 > $5/${3}.fa
+	cat tmp.sequence >> $5/${3}.fa 
+
+}
+
+########################################################################################################################################################
+
+function GetConsensus () {
+	# GetConsensus $REFERENCE $MAPPINGS_FOLDER $sample $CONSENSI $CONSOUT
+
+	samtools mpileup -aa -A -d 0 -B -q 10 -Q 13 --reference $1 $2/${3}_nodup.baq.bam  | ivar consensus -p $4/${3} -t 0.5 -q 20 -m 10
 
 
 	
