@@ -16,8 +16,8 @@ def parse_args(args=None):
 	parser = argparse.ArgumentParser(description=Description, epilog=Epilog)
 	parser.add_argument('-i', '--ivar_folder', dest='ivar_folder', default='ivar_variants', help='Where is the ivar folder?')
 	parser.add_argument('-x', '--mutations_prefix', default='allMutations', dest='mutations', help='How to name my mutations output?')
-	parser.add_argument('-c', '--intersection', default="True", type=str, dest='intersection', help='Use intersections?')
-	parser.add_argument('-t', '--timepointsort', dest='timepointsort', default="True", type=str, help='Should I sort the tables by timepoint? (not applicable for assemblies)')
+	parser.add_argument('-c', '--intersection', default="true", type=str, dest='intersection', help='Use intersections?')
+	parser.add_argument('-t', '--timepointsort', dest='timepointsort', default="true", type=str, help='Should I sort the tables by timepoint? (not applicable for assemblies)')
 
 	parser.add_argument('-s', '--selection', dest='selection', help='Where do i put the mutation occurence table?')
 
@@ -25,8 +25,8 @@ def parse_args(args=None):
 
 def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepointsort):
 	print(intersection)
-	if intersection == "True":
-		if timepointsort == "True":
+	if intersection == "true":
+		if timepointsort == "true":
 			flst = sorted(
 				[
 					fl for fl in os.listdir(ivar_folder) if fl.endswith('.raw.tsv') and fl.rstrip('.raw.tsv').endswith('_intersection')
@@ -39,7 +39,7 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 					fl for fl in os.listdir(ivar_folder) if fl.endswith('.raw.tsv') and fl.rstrip('.raw.tsv').endswith('_intersection')
 				])
 	else:
-		if timepointsort == "True":
+		if timepointsort == "true":
 			flst = sorted(
 				[
 					fl for fl in os.listdir(ivar_folder) if fl.endswith('.raw.tsv') and fl.rstrip('.raw.tsv').endswith('_nodup')
@@ -59,13 +59,12 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 		with open(ivar_folder + '/'+fl) as fin:
 			header = fin.readline().strip().split()
 			lines = [line.strip().split() for line in fin]
-			if timepointsort == True:
-				timepoint = int(sample.lstrip('P'))
+			if timepointsort == "true":
+				timepoint = int(sample.lstrip('P').lstrip('T'))
 				data += [[sample] + [timepoint] + ['|'.join(line[0:4])] + line for line in lines]
 			else:
 				data += [[sample] + ['|'.join(line[0:4])] + line for line in lines]
-	header = header
-	if timepointsort == True:
+	if timepointsort == "true":
 		header = ['Sample', 'Timepoint', 'Uniq'] + header  
 	else: 
 		header = ['Sample', 'Uniq'] + header
