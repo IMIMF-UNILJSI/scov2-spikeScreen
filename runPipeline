@@ -58,6 +58,7 @@ else
 fi
 
 cp -r results $RESULTSDIR/${INSTANCE_NAME}
+rm -r results
 
 cd $WORKDIR
 

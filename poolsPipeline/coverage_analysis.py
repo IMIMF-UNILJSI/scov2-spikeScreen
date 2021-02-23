@@ -41,9 +41,11 @@ def draw_coverage_profiles(stats_folder, prefix, xlim, ylim, logscale, merged=Fa
 				coverage[sindex] += np.array(lines)
 	for i, file in enumerate(files):
 		plt.plot(coverage[i], label=file)
-		percentile = np.percentile(coverage[i], [0, 5, 10, 15, 20, 25, 50 ,75, 100])
-		#print(file, percentile)
-		percentiles.append(list(percentile))
+		try:
+			percentile = np.percentile(coverage[i], [0, 5, 10, 15, 20, 25, 50 ,75, 100])
+			percentiles.append(list(percentile))
+		except IndexError:
+			continue
 
 	plt.xlabel("Genomic position")
 	plt.ylabel("Coverage")
