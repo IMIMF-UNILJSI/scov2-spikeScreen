@@ -17,7 +17,7 @@ keys = {
 	}
 
 
-position_dict = {
+positions_dict = {
 	"BoJo": [
 		["A", "-TACATG", "del69_70", 68, "TACATG", ""],
 		["T", "-TTA", "del144", 143, "TTA", ""],
