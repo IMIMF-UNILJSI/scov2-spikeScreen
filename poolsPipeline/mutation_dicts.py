@@ -5,10 +5,16 @@ Viral strain descriptions based on S-protein
 BoJo - B.1.1.7 / VOC-N501Y.V1 / Jolly good England
 NeMa - B.1.351 / VOC-N501Y.V2 / South Africa
 PaCo - P.1 / VOC-N501Y.V3 / Brasil
+Zorro - B.1.429 / GH452R.V1 / California
+RoPeMa - B.1.258.17 /  / Slovenia
+
 
 """
 
-keys = ["BoJo", "NeMa", "PaCo"]
+keys = {
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa"],
+	'v1': ["BoJo", "NeMa", "PaCo"]
+	}
 
 
 positions_dict = {
@@ -47,5 +53,15 @@ positions_dict = {
 		["X", "X", "H655Y", 655, "H", "Y"],
 		["X", "X", "T1027I", 1027, "T", "I"],
 		["X", "X", "V1176F", 1176, "V", "F"]
+	],
+	"Zorro": [
+ 		["X", "X", "L452R",452, "L", "R"],
+ 		["X", "X", "S13I", 13, "S", "I"],
+ 		["X", "X", "W152C", 152, "W", "C"]
+  ],
+	"RoPeMa": [
+		["X", "X", "N439K", 439, "N", "K"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "V772I", 772, "V", "I"]
 	]
 }
