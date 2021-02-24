@@ -138,7 +138,7 @@ done
 
 # summarize to images, tables
 ./coverage_analysis.py --prefix cg --runmerged=false
-./variant_analysis.py --timepointsort=false --intersection=false --mutations_prefix=allMutations_individual 
+./variant_analysis.py --timepointsort=false --intersection=false --mutations_prefix=allMutations_individual --selection=selectedMutations_individual
 
 
 
