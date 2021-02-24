@@ -119,11 +119,11 @@ def create_mutationOccurenceTables(data, keyset):
 
 		mutations_altCount[key] = []
 		mutations_altRever[key] = []
-		mutations_altRevPr[key] = []
+		# mutations_altRevPr[key] = []
 
 		mutations_refCount[key] = []
 		mutations_refRever[key] = []
-		mutations_refRevPr[key] = []
+		# mutations_refRevPr[key] = []
 
 		mutations_SBp[key] = []
 
@@ -137,11 +137,11 @@ def create_mutationOccurenceTables(data, keyset):
 
 			altCount = [0.0]*len(positions)
 			altRever = [0.0]*len(positions)
-			altRevPr = [0.0]*len(positions)
+			# altRevPr = [0.0]*len(positions)
 
 			refCount = [0.0]*len(positions)
 			refRever = [0.0]*len(positions)
-			refRevPr = [0.0]*len(positions)
+			# refRevPr = [0.0]*len(positions)
 
 			sb_p = [0.0]*len(positions)
 
@@ -158,11 +158,11 @@ def create_mutationOccurenceTables(data, keyset):
 
 						altCount[i] = float(sub.ALT_DP.values[0])
 						altRever[i] = float(sub.ALT_RV.values[0])
-						altRevPr[i] = altRever[i]/altCount[i]
+						# altRevPr[i] = altRever[i]/altCount[i]
 
 						refCount[i] = float(sub.REF_DP.values[0])
 						refRever[i] = float(sub.REF_RV.values[0])
-						refRevPr[i] = refRever[i]/refCount[i]
+						# refRevPr[i] = refRever[i]/refCount[i]
 						
 						oddsratio , pvalue = fisher_exact([[altRever[i], altCount[i]-altRever[i]],[refRever[i], refCount[i]-refRever[i]]]) #if (altRever[i] > 0.0) or (refRever[i] > 0.0) else 0.0, 1.0
 						# oddsratio , pvalue, bla1, bla2 = chi2_contingency([[altRever[i], altCount[i]-altRever[i]],[refRever[i], refCount[i]-refRever[i]]])
@@ -177,11 +177,11 @@ def create_mutationOccurenceTables(data, keyset):
 
 		mutations_altCount[key].append(altCount)
 		mutations_altRever[key].append(altRever)
-		mutations_altRevPr[key].append(altRevPr)
+		# mutations_altRevPr[key].append(altRevPr)
 
 		mutations_refCount[key].append(refCount)
 		mutations_refRever[key].append(refRever)
-		mutations_refRevPr[key].append(refRevPr)
+		# mutations_refRevPr[key].append(refRevPr)
 
 		mutations_SBp[key].append(sb_p)
 
@@ -191,10 +191,10 @@ def create_mutationOccurenceTables(data, keyset):
 		mutations_freq,
 		mutations_altCount,
 		mutations_altRever,
-		mutations_altRevPr,
+		# mutations_altRevPr,
 		mutations_refCount,
 		mutations_refRever,
-		mutations_refRevPr,
+		# mutations_refRevPr,
 		mutations_SBp
 	]
 
@@ -202,7 +202,7 @@ def create_mutationOccurenceTables(data, keyset):
 
 def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix):
 
-	mutations_present, mutations_uniq, mutations_freq, mutations_altCount, mutations_altRever, mutations_altRevPr, mutations_refCount, mutations_refRever, mutations_refRevPr, mutations_SBp = mutations
+	mutations_present, mutations_uniq, mutations_freq, mutations_altCount, mutations_altRever, mutations_refCount, mutations_refRever, mutations_SBp = mutations
 	import mutation_dicts as md
 
 	####### Prepare tables ######
@@ -226,11 +226,11 @@ def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix
 
 	mut_altCount = []
 	mut_altRever = []
-	mut_altRevPr = []
+	# mut_altRevPr = []
 
 	mut_refCount = []
 	mut_refRever = []
-	mut_refRevPr = []
+	# mut_refRevPr = []
 
 	mut_SBp = []
 
@@ -241,11 +241,11 @@ def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix
 
 		altCount = list(zip(*mutations_altCount[key]))
 		altRever = list(zip(*mutations_altRever[key]))
-		altRevPr = list(zip(*mutations_altRevPr[key]))
+		# altRevPr = list(zip(*mutations_altRevPr[key]))
 
 		refCount = list(zip(*mutations_refCount[key]))
 		refRever = list(zip(*mutations_refRever[key]))
-		refRevPr = list(zip(*mutations_refRevPr[key]))
+		# refRevPr = list(zip(*mutations_refRevPr[key]))
 
 		sbp = list(zip(*mutations_SBp[key]))
 
@@ -256,11 +256,11 @@ def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix
 
 		mut_altCount += altCount
 		mut_altRever += altRever
-		mut_altRevPr += altRevPr
+		# mut_altRevPr += altRevPr
 
 		mut_refCount += refCount
 		mut_refRever += refRever
-		mut_refRevPr += refRevPr
+		# mut_refRevPr += refRevPr
 
 		mut_SBp += sbp
 
@@ -270,11 +270,11 @@ def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix
 
 	mut_altCount = list(zip(*mut_altCount))
 	mut_altRever = list(zip(*mut_altRever))
-	mut_altRevPr = list(zip(*mut_altRevPr))
+	# mut_altRevPr = list(zip(*mut_altRevPr))
 
 	mut_refCount = list(zip(*mut_refCount))
 	mut_refRever = list(zip(*mut_refRever))
-	mut_refRevPr = list(zip(*mut_refRevPr))
+	# mut_refRevPr = list(zip(*mut_refRevPr))
 
 	mut_SBp = list(zip(*mut_SBp))
 
@@ -284,10 +284,10 @@ def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix
 	df3 = pd.DataFrame(mut_freq, columns=columns, index=samples)
 	df4 = pd.DataFrame(mut_altCount, columns=columns, index=samples)
 	df5 = pd.DataFrame(mut_altRever, columns=columns, index=samples)
-	df6 = pd.DataFrame(mut_altRevPr, columns=columns, index=samples)
+	# df6 = pd.DataFrame(mut_altRevPr, columns=columns, index=samples)
 	df7 = pd.DataFrame(mut_refCount, columns=columns, index=samples)
 	df8 = pd.DataFrame(mut_refRever, columns=columns, index=samples)
-	df9 = pd.DataFrame(mut_refRevPr, columns=columns, index=samples)
+	# df9 = pd.DataFrame(mut_refRevPr, columns=columns, index=samples)
 	df10 = pd.DataFrame(mut_SBp, columns=columns, index=samples)
 
 	df1.index.name = "Pools"
@@ -295,10 +295,10 @@ def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix
 	df3.index.name = "Pools"
 	df4.index.name = "Pools"
 	df5.index.name = "Pools"
-	df6.index.name = "Pools"
+	# df6.index.name = "Pools"
 	df7.index.name = "Pools"
 	df8.index.name = "Pools"
-	df9.index.name = "Pools"
+	# df9.index.name = "Pools"
 	df10.index.name = "Pools"
 	
 	writer = pd.ExcelWriter(destination_prefix + ".xlsx")
@@ -308,10 +308,10 @@ def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix
 	df3.to_excel(writer, sheet_name="Freq")
 	df4.to_excel(writer, sheet_name="AltDP")
 	df5.to_excel(writer, sheet_name="AltRV")
-	df6.to_excel(writer, sheet_name="AltRV_AltDP")
+	# df6.to_excel(writer, sheet_name="AltRV_AltDP")
 	df7.to_excel(writer, sheet_name="RefDP")
 	df8.to_excel(writer, sheet_name="RefRV")
-	df9.to_excel(writer, sheet_name="RefRV_RefDP")
+	# df9.to_excel(writer, sheet_name="RefRV_RefDP")
 	df10.to_excel(writer, sheet_name="SB")
 
 	writer.save()
