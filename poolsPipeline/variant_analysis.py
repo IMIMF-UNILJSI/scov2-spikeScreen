@@ -22,6 +22,7 @@ def parse_args(args=None):
 	parser.add_argument('-t', '--timepointsort', dest='timepointsort', default="true", type=str, help='Should I sort the tables by timepoint? (not applicable for assemblies)')
 
 	parser.add_argument('-s', '--selection', dest='selection', default="selectedMutations", type=str, help='Where do i put the mutation occurence table?')
+	parser.add_argument('-k', '--keyset', dest='keyset', default='default', help="Select keyset; defaults for BoJo, NeMa nad PaCo.")
 
 	return parser.parse_args(args)
 
@@ -85,7 +86,7 @@ def readWrite_MutationsData2excel(ivar_folder, intersection, mutations, timepoin
 	
 	return data
 
-def create_mutationOccurenceTables(data):
+def create_mutationOccurenceTables(data, keyset):
 	
 	samples = data.Sample.drop_duplicates().to_list()
 	import mutation_dicts as md
@@ -104,8 +105,9 @@ def create_mutationOccurenceTables(data):
 
 	mutations_SBp = {}
 
+	keys = md.keys[keyset]
 
-	for key in md.keys:
+	for key in keys:
 		print(key)
 
 		positions = md.positions_dict[key]
@@ -198,7 +200,7 @@ def create_mutationOccurenceTables(data):
 
 	return mutations, samples
 
-def write_mutationOccurenceTables(mutations, samples, destination_prefix):
+def write_mutationOccurenceTables(mutations, samples, keyset, destination_prefix):
 
 	mutations_present, mutations_uniq, mutations_freq, mutations_altCount, mutations_altRever, mutations_altRevPr, mutations_refCount, mutations_refRever, mutations_refRevPr, mutations_SBp = mutations
 	import mutation_dicts as md
@@ -208,8 +210,8 @@ def write_mutationOccurenceTables(mutations, samples, destination_prefix):
 	## Prepare column index names
 
 	tuples = []
-
-	for key in md.keys:
+	keys = md.keys[keyset]
+	for key in keys:
 		key_tuples = [(key, i) for i in list(zip(*md.positions_dict[key]))[2]]
 		tuples += key_tuples
 
@@ -232,7 +234,7 @@ def write_mutationOccurenceTables(mutations, samples, destination_prefix):
 
 	mut_SBp = []
 
-	for key in md.keys:
+	for key in keys:
 		present = list(zip(*mutations_present[key]))
 		uniq = list(zip(*mutations_uniq[key]))
 		freq = list(zip(*mutations_freq[key]))
@@ -318,9 +320,9 @@ def write_mutationOccurenceTables(mutations, samples, destination_prefix):
 def main(args=None):
 	args = parse_args(args)
 	data = readWrite_MutationsData2excel(args.ivar_folder, args.intersection, args.mutations, args.timepointsort)
-	mutations, samples = create_mutationOccurenceTables(data)
+	mutations, samples = create_mutationOccurenceTables(data, args.keyset)
 	print(args.selection)
-	write_mutationOccurenceTables(mutations, samples, args.selection)
+	write_mutationOccurenceTables(mutations, samples, args.keyset, args.selection)
 
 if __name__ == '__main__':
 	sys.exit(main())
