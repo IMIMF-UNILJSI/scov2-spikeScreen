@@ -169,21 +169,18 @@ def create_mutationOccurenceTables(data, keyset):
 
 						sb_p[i] = pvalue
 
-		print("\t".join([sample]+present))
+			print("\t".join([sample]+present))
 
-		mutations_present[key].append(present)
-		mutations_uniq[key].append(uniq)
-		mutations_freq[key].append(freq)
-
-		mutations_altCount[key].append(altCount)
-		mutations_altRever[key].append(altRever)
-		# mutations_altRevPr[key].append(altRevPr)
-
-		mutations_refCount[key].append(refCount)
-		mutations_refRever[key].append(refRever)
-		# mutations_refRevPr[key].append(refRevPr)
-
-		mutations_SBp[key].append(sb_p)
+			mutations_present[key].append(present)
+			mutations_uniq[key].append(uniq)
+			mutations_freq[key].append(freq)
+			mutations_altCount[key].append(altCount)
+			mutations_altRever[key].append(altRever)
+			# mutations_altRevPr[key].append(altRevPr)
+			mutations_refCount[key].append(refCount)
+			mutations_refRever[key].append(refRever)
+			# mutations_refRevPr[key].append(refRevPr)
+			mutations_SBp[key].append(sb_p)
 
 	mutations = [
 		mutations_present,
@@ -321,7 +318,7 @@ def main(args=None):
 	args = parse_args(args)
 	data = readWrite_MutationsData2excel(args.ivar_folder, args.intersection, args.mutations, args.timepointsort)
 	mutations, samples = create_mutationOccurenceTables(data, args.keyset)
-	print(args.selection)
+	# print(args.selection)
 	write_mutationOccurenceTables(mutations, samples, args.keyset, args.selection)
 
 if __name__ == '__main__':
