@@ -7,6 +7,7 @@ NeMa - B.1.351 / VOC-N501Y.V2 / South Africa
 PaCo - P.1 / VOC-N501Y.V3 / Brasil
 Zorro - B.1.429 / GH452R.V1 / California
 RoPeMa - B.1.258.17 /  / Slovenia
+SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 
 
 """
