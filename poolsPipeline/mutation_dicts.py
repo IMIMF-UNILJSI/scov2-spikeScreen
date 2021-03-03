@@ -7,12 +7,13 @@ NeMa - B.1.351 / VOC-N501Y.V2 / South Africa
 PaCo - P.1 / VOC-N501Y.V3 / Brasil
 Zorro - B.1.429 / GH452R.V1 / California
 RoPeMa - B.1.258.17 /  / Slovenia
+SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 
 
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -32,8 +33,6 @@ positions_dict = {
 	"NeMa": [
 		["X", "X", "D80A", 80, "D", "A"],
 		["X", "X", "D215G", 215, "D", "G"],
-		["A", "-CTTGCTTT", "del242_244", 241, "CTTGCTTT", ""],
-		["X", "X", "R246I", 246, "R", "I"],
 		["X", "X", "K417N", 417, "K", "N"],
 		["X", "X", "E484K", 484, "E", "K"],
 		["X", "X", "N501Y", 501, "N", "Y"],
@@ -59,10 +58,17 @@ positions_dict = {
 		["X", "X", "W152C", 152, "W", "C"]
 		["X", "X", "L452R",452, "L", "R"],
 		["X", "X", "D614G", 614, "D", "G"],
-  ],
+  	],
 	"RoPeMa": [
 		["X", "X", "N439K", 439, "N", "K"],
 		["X", "X", "D614G", 614, "D", "G"],
 		["X", "X", "V772I", 772, "V", "I"]
+	],
+	"SunniAli": [
+		["X", "X", "Q52R", 52, "Q", "R"],
+		["X", "X", "E484K", 484, "E", "K"],
+		["X", "X", "Q677H", 677, "Q", "H"],
+		["X", "X", "F888L", 888, "F", "L"],
 	]
+	
 }
