@@ -8,12 +8,12 @@ PaCo - P.1 / VOC-N501Y.V3 / Brasil
 Zorro - B.1.429 / GH452R.V1 / California
 RoPeMa - B.1.258.17 /  / Slovenia
 SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
-
+Napoleon - A.27 /France-Mayotte /
 
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -69,6 +69,13 @@ positions_dict = {
 		["X", "X", "E484K", 484, "E", "K"],
 		["X", "X", "Q677H", 677, "Q", "H"],
 		["X", "X", "F888L", 888, "F", "L"],
+		
+	"Napoleon": [
+		["X", "X", "D796Y ", 796, "D", "Y"],
+		["X", "X", "G1219V", 1219, "G", "V"],
+		["X", "X", "A653V", 653, "A", "V"],
+		["X", "X", "H655Y", 655, "H", "Y"],
+		["X", "X", "N501Y", 501, "N", "Y"]
 	]
 	
 }
