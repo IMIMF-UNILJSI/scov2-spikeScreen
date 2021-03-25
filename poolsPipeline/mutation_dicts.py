@@ -9,11 +9,12 @@ Zorro - B.1.429 / GH452R.V1 / California
 RoPeMa - B.1.258.17 /  / Slovenia
 SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 Napoleon - A.27 /France-Mayotte /
+NeMa_M2  B.1.351_something / exchanege students in Finland - NeMa mark 2
 
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon", "NeMa_M2"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -76,6 +77,23 @@ positions_dict = {
 		["X", "X", "A653V", 653, "A", "V"],
 		["X", "X", "H655Y", 655, "H", "Y"],
 		["X", "X", "N501Y", 501, "N", "Y"]
+		],
+	"NeMa_M2": [
+		["X", "X", "T19I", 19, "T", "I"],
+		["X", "X", "D80A", 80, "D", "A"],
+		["X", "X", "D215G", 215, "D", "G"],
+		["X", "X", "K417N", 417, "K", "N"],
+		["X", "X", "E484K", 484, "E", "K"],
+		["X", "X", "N501Y", 501, "N", "Y"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "A701V", 701, "A", "V"],
+		["T", "-TTA", "del144", 143, "TTA", ""],
+		["A", "-CTTTACTTG", "del42", 242, "CTTTACTTG", ""],
+		["C", "-T", "p_Leu241fs", 241, "C", ""],
+		["C", "-TT", "p_Leu244fs", 244, "TT", ""],
+		["C", "-T", "p_Leu244fs_A", 244, "T", ""],
+		["T", "-TA", "p_Leu244fs_B", 244, "TA", ""]
+		
 	]
 	
 }
