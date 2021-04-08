@@ -9,11 +9,11 @@ Zorro - B.1.429 / GH452R.V1 / California
 RoPeMa - B.1.258.17 /  / Slovenia
 SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 Napoleon - A.27 /France-Mayotte /
-
+FrankSinatra - B.1.562 / USA NY
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon", "FrankSinatra"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -76,6 +76,12 @@ positions_dict = {
 		["X", "X", "A653V", 653, "A", "V"],
 		["X", "X", "H655Y", 655, "H", "Y"],
 		["X", "X", "N501Y", 501, "N", "Y"]
+	],
+	"FrankSinatra": [
+		["X", "X", "T95I ", 95, "T", "I"],
+		["X", "X", "D253G", 253, "D", "G"],
+		["X", "X", "D614G", 614, "D", "G"]
+		
 	]
 	
 }
