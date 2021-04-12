@@ -9,7 +9,7 @@ Zorro - B.1.429 / GH452R.V1 / California
 RoPeMa - B.1.258.17 /  / Slovenia
 SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 Napoleon - A.27 /France-Mayotte /
-FrankSinatra - B.1.562 / USA NY
+FrankSinatra - B.1.526 / USA NY
 """
 
 keys = {
