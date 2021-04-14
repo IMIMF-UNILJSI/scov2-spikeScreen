@@ -10,10 +10,11 @@ RoPeMa - B.1.258.17 /  / Slovenia
 SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 Napoleon - A.27 /France-Mayotte /
 FrankSinatra - B.1.526 / USA NY
+MahatmaGandhi - B.1.617 / India
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon", "FrankSinatra"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon", "FrankSinatra", "MahatmaGandhi"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -81,7 +82,12 @@ positions_dict = {
 		["X", "X", "T95I ", 95, "T", "I"],
 		["X", "X", "D253G", 253, "D", "G"],
 		["X", "X", "D614G", 614, "D", "G"]
-		
+		],	
+	"MahatmaGandhi": [
+		["X", "X", "E154K ", 154, "E", "K"],
+		["X", "X", "L452R", 452, "L", "R"],
+		["X", "X", "E484Q", 484, "E", "Q"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "P681R", 614, "P", "R"]
 	]
-	
 }
