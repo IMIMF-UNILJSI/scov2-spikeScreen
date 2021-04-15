@@ -11,10 +11,11 @@ SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 Napoleon - A.27 /France-Mayotte /
 FrankSinatra - B.1.526 / USA NY
 MahatmaGandhi - B.1.617 / India
+SunniBaru - B.1.1.318 / Nigeria-USA-UK
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon", "FrankSinatra", "MahatmaGandhi"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon", "FrankSinatra", "MahatmaGandhi", "SunniBaru"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -89,5 +90,12 @@ positions_dict = {
 		["X", "X", "E484Q", 484, "E", "Q"],
 		["X", "X", "D614G", 614, "D", "G"],
 		["X", "X", "P681R", 614, "P", "R"]
-	]
+	"SunniBaru": [
+		["X", "X", "T95I ", 95, "T", "I"],
+		["T", "-TTA", "del144", 143, "TTA", ""],
+		["X", "X", "E484K", 484, "E", "K"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["C", "A", "P681H", 681, "P", "H"],
+		["X", "X", "D796H ", 796, "D", "H"]
+		]
 }
