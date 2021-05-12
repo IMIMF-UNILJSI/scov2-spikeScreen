@@ -10,12 +10,14 @@ RoPeMa - B.1.258.17 /  / Slovenia
 SunniAli - B.1.525 / Nigeria-Denmark - "Hamlet"
 Napoleon - A.27 /France-Mayotte /
 FrankSinatra - B.1.526 / USA NY
-MahatmaGandhi - B.1.617 / India
 SunniBaru - B.1.1.318 / Nigeria-USA-UK
+MahatmaGandhi_1 B.1.617.1 / Incredible India
+MahatmaGandhi_2 B.1.617.2 / VOC-21APR-02 / Incredible India
+MahatmaGandhi_3 B.1.617.3 / Incredible India
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "Napoleon", "FrankSinatra", "MahatmaGandhi", "SunniBaru"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -65,12 +67,20 @@ positions_dict = {
 		["X", "X", "N439K", 439, "N", "K"],
 		["X", "X", "D614G", 614, "D", "G"],
 		["X", "X", "V772I", 772, "V", "I"]
-	],
+	],	
 	"SunniAli": [
 		["X", "X", "Q52R", 52, "Q", "R"],
 		["X", "X", "E484K", 484, "E", "K"],
 		["X", "X", "Q677H", 677, "Q", "H"],
 		["X", "X", "F888L", 888, "F", "L"]
+	],
+	"SunniBaru": [
+		["X", "X", "T95I ", 95, "T", "I"],
+		["T", "-TTA", "del144", 143, "TTA", ""],
+		["X", "X", "E484K", 484, "E", "K"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["C", "A", "P681H", 681, "P", "H"],
+		["X", "X", "D796H ", 796, "D", "H"]
 	],
 	"Napoleon": [
 		["X", "X", "D796Y ", 796, "D", "Y"],
@@ -84,19 +94,28 @@ positions_dict = {
 		["X", "X", "D253G", 253, "D", "G"],
 		["X", "X", "D614G", 614, "D", "G"]
 	],	
-	"MahatmaGandhi": [
-		["X", "X", "E154K ", 154, "E", "K"],
+	"MahatmaGandhi_1": [
+		["X", "X", "L452R", 452, "L", "R"],
+		["X", "X", "E484Q", 484, "E", "Q"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "P681R", 614, "P", "R"],
+		["X", "X", "Q1071H", 1071, "Q", "H"]
+	],	
+	"MahatmaGandhi_2": [
+		["X", "X", "T19R ", 154, "E", "K"],
+		["X", "X", "L452R", 452, "L", "R"],
+		["X", "X", "T478K", 452, "T", "K"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "P681R", 614, "P", "R"],
+		["X", "X", "D950N", 614, "D", "N"]
+	],
+	"MahatmaGandhi_3": [
+		["X", "X", "T19R ", 154, "E", "K"],
 		["X", "X", "L452R", 452, "L", "R"],
 		["X", "X", "E484Q", 484, "E", "Q"],
 		["X", "X", "D614G", 614, "D", "G"],
 		["X", "X", "P681R", 614, "P", "R"]
-	],
-	"SunniBaru": [
-		["X", "X", "T95I ", 95, "T", "I"],
-		["T", "-TTA", "del144", 143, "TTA", ""],
-		["X", "X", "E484K", 484, "E", "K"],
-		["X", "X", "D614G", 614, "D", "G"],
-		["C", "A", "P681H", 681, "P", "H"],
-		["X", "X", "D796H ", 796, "D", "H"]
 		]
 }
+
+
