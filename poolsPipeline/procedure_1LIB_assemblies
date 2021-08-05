@@ -99,12 +99,6 @@ for sample in $(cat samples_list); do
 
 done
 
-# zip output
-zip $RESULTSFOLDER/Fastq.zip Fastq/*
-zip $RESULTSFOLDER/qc_raw.zip qc_raw/*
-zip $RESULTSFOLDER/trimmed_reads.zip trimmed_reads/*
-zip $RESULTSFOLDER/qc_trimmed.zip qc_trimmed/*
-
 # ########################################################################################################################################################
 
 echo "########################################################"
@@ -139,8 +133,8 @@ done
 
 cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
 
-zip $RESULTSFOLDER/consensi.zip consensi/*
-zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
+# zip $RESULTSFOLDER/consensi.zip consensi/*
+# zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
 
 ########################################################################################################################################################
 
@@ -163,15 +157,18 @@ done
 ./coverage_analysis.py --prefix cg --runmerged=false
 ./variant_analysis.py --timepointsort=false --intersection=false --mutations_prefix=allMutations_individual --selection=selectedMutations_individual
 
-#zip output
-
-zip $RESULTSFOLDER/stats.zip stats/*
-zip $RESULTSFOLDER/mappings.zip mappings/*
-zip $RESULTSFOLDER/variants.zip variants/*
-zip $RESULTSFOLDER/ivar_variants.zip ivar_variants/*
-zip $RESULTSFOLDER/annotated.zip annotated/*
-zip $RESULTSFOLDER/coverage.zip coverages_raw *covPerc* *coverage.png *coverage.pdf
-zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx selectedMutations.xlsx
+# # zip output
+# zip $RESULTSFOLDER/Fastq.zip Fastq/*
+# zip $RESULTSFOLDER/qc_raw.zip qc_raw/*
+# zip $RESULTSFOLDER/trimmed_reads.zip trimmed_reads/*
+# zip $RESULTSFOLDER/qc_trimmed.zip qc_trimmed/*
+# zip $RESULTSFOLDER/stats.zip stats/*
+# zip $RESULTSFOLDER/mappings.zip mappings/*
+# zip $RESULTSFOLDER/variants.zip variants/*
+# zip $RESULTSFOLDER/ivar_variants.zip ivar_variants/*
+# zip $RESULTSFOLDER/annotated.zip annotated/*
+# zip $RESULTSFOLDER/coverage.zip coverages_raw *covPerc* *coverage.png *coverage.pdf
+# zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx selectedMutations.xlsx
 
 ########################################################################################################################################################
 
