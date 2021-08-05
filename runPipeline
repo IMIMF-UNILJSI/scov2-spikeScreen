@@ -1,7 +1,11 @@
 #!/bin/bash
 
-export HOMEDIR=$(dirname "$0")
-export WORKDIR=$(pwd)
+HOMEDIR=$(dirname "$0")
+WORKDIR=$(pwd)
+
+export HOMEDIR
+export WORKDIR
+
 export RUNDIR=$WORKDIR/runs
 export RESULTSDIR=$WORKDIR/results
 export LOGDIR=$WORKDIR/logs
@@ -15,52 +19,52 @@ export DATA_ORIGIN=$3
 # echo $HOMEDIR;
 
 if [  ! -d "$RUNDIR" ]; then
-	mkdir $RUNDIR
+	mkdir "$RUNDIR"
 fi
 
 if [ ! -d "$RESULTSDIR" ]; then
-	mkdir $RESULTSDIR
+	mkdir "$RESULTSDIR"
 fi
 
 if [ ! -d "$LOGDIR" ]; then
-	mkdir $LOGDIR
+	mkdir "$LOGDIR"
 fi
 
 #########################################################################
 
 if [ -d "$RUNDIR/$INSTANCE_NAME" ]; then
-    rm -r $RUNDIR/$INSTANCE_NAME
+    rm -r "${RUNDIR:?}"/"$INSTANCE_NAME"
 fi
 
 if [ -d "$RESULTSDIR/$INSTANCE_NAME" ]; then
-    rm -r $RESULTSDIR/$INSTANCE_NAME
+    rm -r "${RESULTSDIR:?}"/"$INSTANCE_NAME"
 fi
 
 #########################################################################
 
-cp -r $HOMEDIR/poolsPipeline $RUNDIR/${INSTANCE_NAME}
+cp -r "$HOMEDIR"/poolsPipeline "$RUNDIR"/"${INSTANCE_NAME}"
 
-mkdir $RUNDIR/$INSTANCE_NAME/Fastq
-cp $DATA_ORIGIN/* $RUNDIR/$INSTANCE_NAME/Fastq/
+mkdir "$RUNDIR"/"$INSTANCE_NAME"/Fastq
+cp "$DATA_ORIGIN"/* "$RUNDIR"/"$INSTANCE_NAME"/Fastq/
 
-cd $RUNDIR/${INSTANCE_NAME}
+cd "$RUNDIR"/"${INSTANCE_NAME}" || exit
 
-if [ $2 == pools ]; then
-	./procedure_2LIB_Spools 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
-elif [ $2 == pools_single ]; then
-	./procedure_1LIB_Spools 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
-elif [ $2 == assemblies ]; then
-	./procedure_2LIB_assemblies 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
-elif [ $2 == assemblies_single ]; then
-	./procedure_1LIB_assemblies 1>$LOGDIR/${INSTANCE_NAME}.stdout.log 2>$LOGDIR/${INSTANCE_NAME}.stderr.log
+if [ "$2" == pools ]; then
+	./procedure_2LIB_Spools 1>"$LOGDIR"/"${INSTANCE_NAME}".stdout.log 2>"$LOGDIR"/"${INSTANCE_NAME}".stderr.log
+elif [ "$2" == pools_single ]; then
+	./procedure_1LIB_Spools 1>"$LOGDIR"/"${INSTANCE_NAME}".stdout.log 2>"$LOGDIR"/"${INSTANCE_NAME}".stderr.log
+elif [ "$2" == assemblies ]; then
+	./procedure_2LIB_assemblies 1>"$LOGDIR"/"${INSTANCE_NAME}".stdout.log 2>"$LOGDIR"/"${INSTANCE_NAME}".stderr.log
+elif [ "$2" == assemblies_single ]; then
+	./procedure_1LIB_assemblies 1>"$LOGDIR"/"${INSTANCE_NAME}".stdout.log 2>"$LOGDIR"/"${INSTANCE_NAME}".stderr.log
 else
 	echo "Please specify analysis type"
 fi
 
-cp -r results $RESULTSDIR/${INSTANCE_NAME}
+cp -r results "$RESULTSDIR"/"${INSTANCE_NAME}"
 rm -r results
 
-cd $WORKDIR
+cd "$WORKDIR" || exit
 
 # rm -r $RUNDIR/$INSTANCE_NAME
 
