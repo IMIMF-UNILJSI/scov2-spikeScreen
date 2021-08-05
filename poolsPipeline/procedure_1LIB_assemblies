@@ -102,7 +102,7 @@ done
 # ########################################################################################################################################################
 
 echo "########################################################"
-echo "################ MAPPING & VARIANTS ####################"
+echo "################ MAPPING & CONSENSUS ###################"
 echo "########################################################"
 
 IndexReference $REFERENCE_FOLDER/reference.fa
@@ -127,11 +127,8 @@ for sample in $(cat samples_list); do
 
 done
 
-########################################################################################################################################################
-
-# get and zip consensus sequences for quick use (fully document variants later on)
-
 cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
+seqtk comp consensus_sequences.fasta > consensus_sequences.dat
 
 # zip $RESULTSFOLDER/consensi.zip consensi/*
 # zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
@@ -139,6 +136,10 @@ cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
 ########################################################################################################################################################
 
 # compute, summarize etc. variant information (do this last...)
+
+echo "########################################################"
+echo "################ VARIANTS (DETAILED) ###################"
+echo "########################################################"
 
 for sample in $(cat samples_list); do 
 	echo $sample 
