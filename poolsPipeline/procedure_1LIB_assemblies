@@ -126,21 +126,42 @@ for sample in $(cat samples_list); do
 	Alignment $REFERENCE_FOLDER/reference.fa $TRIMMED_READS_FOLDER $sample $MAPPINGS_FOLDER
 	GetStats $REFERENCE_FOLDER/reference.fa $sample $MAPPINGS_FOLDER $STATS_OUTPUT
 
+	## Compute consensus sequences 
 
-	## Variation Ivar
-	IvarVariants $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $IVAR_VARIANTS $VARIANTS_FOLDER
-	AnnotateVariants $HOMEFOLDER $REFERENCE_FOLDER $VARIANTS_FOLDER $sample $ANNOTATED_FOLDER $SNPEFF_INIT NC_045512.2
+	GetConsensus $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $CONSENSUS $CONSOUT
 
-  ## collect mean/sd cov data
-  echo $sample $(cat $STATS_OUTPUT/${sample}.coverage | awk '{sum+=$3; sumsq+=$3*$3} END { print sum/NR,sqrt(sumsq/NR - (sum/NR)**2)  }' - ) >> coverages_raw;
 
 done
 
-# summarize to images, tables
+########################################################################################################################################################
+
+# get and zip consensus sequences for quick use (fully document variants later on)
+
+cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
+
+zip $RESULTSFOLDER/consensi.zip consensi/*
+zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
+
+########################################################################################################################################################
+
+# compute, summarize etc. variant information (do this last...)
+
+for sample in $(cat samples_list); do 
+	echo $sample 
+
+	## Variation Ivar
+
+	IvarVariants $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $IVAR_VARIANTS $VARIANTS_FOLDER
+	AnnotateVariants $HOMEFOLDER $REFERENCE_FOLDER $VARIANTS_FOLDER $sample $ANNOTATED_FOLDER $SNPEFF_INIT NC_045512.2
+
+  	## collect mean/sd cov data
+  	echo $sample $(cat $STATS_OUTPUT/${sample}.coverage | awk '{sum+=$3; sumsq+=$3*$3} END { print sum/NR,sqrt(sumsq/NR - (sum/NR)**2)  }' - ) >> coverages_raw;
+
+done
+
+# summarize variant data to images, tables
 ./coverage_analysis.py --prefix cg --runmerged=false
 ./variant_analysis.py --timepointsort=false --intersection=false --mutations_prefix=allMutations_individual --selection=selectedMutations_individual
-
-
 
 #zip output
 
@@ -153,16 +174,4 @@ zip $RESULTSFOLDER/coverage.zip coverages_raw *covPerc* *coverage.png *coverage.
 zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx selectedMutations.xlsx
 
 ########################################################################################################################################################
-
-for sample in $(cat samples_list); do 
-	echo $sample 
-	GetConsensus $REFERENCE_FOLDER/reference.fa $MAPPINGS_FOLDER $sample $CONSENSUS $CONSOUT
-done
-
-cat consout/* | seqtk seq -l 1000000 - > consensus_sequences.fasta
-
-########################################################################################################################################################
-
-zip $RESULTSFOLDER/consensi.zip consensi/*
-zip $RESULTSFOLDER/sequences.zip consensus_sequences.dat consensus_sequences.fasta
 

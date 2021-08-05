@@ -347,11 +347,11 @@ function AnnotateVariants () {
 
 	echo "CALL VARIANT CONSEQUENCES - SNPEFF"
 
-	cd $2
+	cd $2 || exit
 
 	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_nodup.raw.vcf > $5/${4}_nodup.raw.ann.vcf
 
-	cd $1
+	cd $1 || exit
 }
 
 ########################################################################################################################################################
@@ -361,7 +361,7 @@ function AnnotateVariants_2LIB () {
 
 	echo "CALL VARIANT CONSEQUENCES - SNPEFF"
 
-	cd $2
+	cd $2 || exit
 
 
 	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_nodup.raw.vcf > $5/${4}_nodup.raw.ann.vcf
@@ -369,7 +369,7 @@ function AnnotateVariants_2LIB () {
 	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_merged.raw.vcf > $5/${4}_merged.raw.ann.vcf
 	snpEff ann -noLog -noStats -no-downstream -no-upstream -dataDir $6 $7 $3/${4}_intersection.raw.vcf > $5/${4}_intersection.raw.ann.vcf
 
-	cd $1
+	cd $1 || exit
 }
 
 
