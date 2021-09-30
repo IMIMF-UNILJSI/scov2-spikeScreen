@@ -15,10 +15,11 @@ MahatmaGandhi_1 B.1.617.1 / Incredible India
 MahatmaGandhi_2 B.1.617.2 / VOC-21APR-02 / Incredible India
 MahatmaGandhi_3 B.1.617.3 / Incredible India
 Delta_plus B.1.617.2 +K417N / Incredible India
+Mu B1.621 and B.1.621.1 /South America
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus"],
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu"],
 	'v1': ["BoJo", "NeMa", "PaCo"]
 	}
 
@@ -125,6 +126,18 @@ positions_dict = {
 		["X", "X", "D614G", 614, "D", "G"],
 		["X", "X", "P681R", 681, "P", "R"],
 		["X", "X", "D950N", 950, "D", "N"]
+	],
+	"Mu": [
+		["X", "X", "T95I ", 95, "T", "I"],
+		["X", "X", "Y144S ",144, "Y", "S"],
+		["X", "X", "Y145N ",145, "Y", "N"],
+		["X", "X", "R346K", 346, "R", "K"],
+		["X", "X", "E484K", 484, "E", "K"],
+		["A", "T", "N501Y", 501, "N", "Y"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "P681H", 681, "P", "H"],	
+		["X", "X", "D950N", 950, "D", "N"]
 		]
+
 }
 
