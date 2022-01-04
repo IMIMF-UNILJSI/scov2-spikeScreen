@@ -17,13 +17,14 @@ MahatmaGandhi_3 B.1.617.3 / Incredible India
 Delta_plus B.1.617.2 +K417N / Incredible India
 Mu B1.621 and B.1.621.1 /South America
 AY.4.2 "aka delta plus plus"/ Jolly good England
-Omikron - B.1.1.529 / Africa
+Omikron - B.1.1.529 
 B.1.640.2 aka IHU/ Cameroon
+
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu""AY.4.2.", "Omikron", "B.1.640.2"],
-	'v1': ["MahatmaGandhi_1", "MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2", "Omikron", "B.1.640.2"]
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2.", "Omikron", "B.1.640.2"],
+	'v2': ["MahatmaGandhi_1", "MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2", "Omikron", "B.1.640.2"]
 	}
 
 
