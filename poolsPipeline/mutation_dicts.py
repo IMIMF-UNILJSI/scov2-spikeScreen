@@ -16,11 +16,14 @@ MahatmaGandhi_2 B.1.617.2 / VOC-21APR-02 / Incredible India
 MahatmaGandhi_3 B.1.617.3 / Incredible India
 Delta_plus B.1.617.2 +K417N / Incredible India
 Mu B1.621 and B.1.621.1 /South America
+AY.4.2 "aka delta plus plus"/ Jolly good England
+Omikron - B.1.1.529 / Africa
+B.1.640.2 aka IHU/ Cameroon
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu"],
-	'v1': ["BoJo", "NeMa", "PaCo"]
+	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu""AY.4.2.", "Omikron", "B.1.640.2"],
+	'v1': ["MahatmaGandhi_1", "MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2", "Omikron", "B.1.640.2"]
 	}
 
 
@@ -137,7 +140,60 @@ positions_dict = {
 		["X", "X", "D614G", 614, "D", "G"],
 		["X", "X", "P681H", 681, "P", "H"],	
 		["X", "X", "D950N", 950, "D", "N"]
-		]
+	],
+	"AY.4.2.": [
+		["X", "X", "Y145H ",145, "Y", "H"],
+		["X", "X", "A222V ",222, "A", "V"]
+	],
+	"Omikron": [
+		["X", "X", "A67V", 67, "A", "V"],
+		["A", "-TACATG", "del69_70", 68, "TACATG", ""],
+		["X", "X", "T95I", 95, "T", "I"],
+		["X", "X", "G142D", 142, "G", "D"],
+		["X", "X", "L212I", 212, "L", "I"],
+		["X", "X", "G339D", 339, "G", "D"],
+		["X", "X", "S371L", 371, "S", "L"],
+		["X", "X", "S373P", 373, "S", "P"],
+		["X", "X", "S375F", 375, "S", "F"],
+		["X", "X", "K417N", 417, "K", "N"],
+		["X", "X", "N440K", 440, "N", "K"],
+		["X", "X", "G446S", 446, "G", "S"],
+		["X", "X", "S477N", 477, "S", "N"],
+		["X", "X", "T478K", 478, "T", "K"],
+		["X", "X", "E484A", 484, "E", "A"],
+		["X", "X", "Q493K", 493, "Q", "K"],
+		["X", "X", "G496S", 496, "G", "S"],
+		["X", "X", "Q498R", 498, "Q", "R"],
+		["A", "T", "N501Y", 501, "N", "Y"],
+		["X", "X", "Y505H", 505, "Y", "H"],
+		["X", "X", "T547K", 547, "T", "K"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "H655Y", 655, "H", "Y"],
+		["X", "X", "N679K", 679, "N", "K"],
+		["X", "X", "P681H", 681, "P", "H"],
+		["X", "X", "N764K", 764, "N", "K"],
+		["X", "X", "D796Y", 796, "D", "Y"],
+		["X", "X", "N856K", 856, "N", "K"],
+		["X", "X", "Q954H", 954, "Q", "H"],
+		["X", "X", "N969K", 969, "N", "K"],
+		["X", "X", "L981F", 981, "L", "F"]
+	],
+	"B.1.640.2": [
+		["X", "X", "P9L ",9, "P", "L"],
+		["X", "X", "E96Q ",96, "E", "Q"],
+		["X", "X", "R190S ",190, "R", "S"],
+		["X", "X", "D215H ",215, "D", "H"],
+		["X", "X", "R346S ",346, "R", "S"],
+		["X", "X", "N394S ",394, "N", "S"],
+		["X", "X", "Y449N ",449, "Y", "N"],
+		["X", "X", "E484K", 484, "E", "K"],
+		["X", "X", "F490S ",490, "F", "S"],
+		["A", "T", "N501Y", 501, "N", "Y"],
+		["X", "X", "D614G", 614, "D", "G"],
+		["X", "X", "P681H", 681, "P", "H"],
+		["X", "X", "T859N ",859, "T", "N"],
+		["X", "X", "D1139H ",1139, "D", "H"]
+	]
 
 }
 
