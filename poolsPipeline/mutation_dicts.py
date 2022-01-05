@@ -23,7 +23,8 @@ B.1.640.2 aka IHU/ Cameroon
 """
 
 keys = {
-	'default': ["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2.", "Omikron", "B.1.640.2"],
+	'default': ["MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2.", "Omikron", "B.1.640.2"],
+	'v1':["BoJo", "NeMa", "PaCo", "Zorro", "RoPeMa", "SunniAli", "SunniBaru", "Napoleon", "FrankSinatra", "MahatmaGandhi_1","MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2.", "Omikron", "B.1.640.2"],
 	'v2': ["MahatmaGandhi_1", "MahatmaGandhi_2", "MahatmaGandhi_3", "Delta_plus", "Mu", "AY.4.2", "Omikron", "B.1.640.2"]
 	}
 
