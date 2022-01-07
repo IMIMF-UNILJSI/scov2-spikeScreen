@@ -35,7 +35,7 @@ function TrimReads () {
 		out1="$j1" out2="$j2" outs="$j3" \
 		ref=$4/MyAdapters.fasta ktrim=r k=10 mink=5 \
 		qtrim=rl trimq=15 \
-		minlen=75 overwrite=t -Xmx220g
+		minlen=75 overwrite=t -Xmx63g
 
 	
 	# zcat $2/${3}_U1.fastq.gz $2/${3}_U2.fastq.gz | gzip - > $2/${3}_S.fastq.gz
@@ -48,7 +48,7 @@ function TrimReadsTrimmomatic () {
 
 	echo "TRIMMING READS"
 	TrimmomaticPE \
-		-threads 128 \
+		-threads 24 \
 		$1/${3}_*R1*.fastq.gz $1/${3}_*R2*.fastq.gz\
 		$2/${3}_R1.fastq.gz $2/${3}_U1.fastq.gz \
 		$2/${3}_R2.fastq.gz $2/${3}_U2.fastq.gz \
@@ -68,7 +68,7 @@ function FastQC () {
 	#FastQC reads fastqc_out sample
 
 	echo "RUNING QC ON READS"
-	fastqc --threads 128 -o $2 $1/${3}*.fastq*
+	fastqc --threads 24 -o $2 $1/${3}*.fastq*
 
 }
 
@@ -92,26 +92,26 @@ function Alignment () {
 
 	sample1=${3}
 
-	bwa mem -t128 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample1}_*R1*.fastq.gz $2/${sample1}_*R2*.fastq.gz | \
-		samtools view --threads 128 -uhS -F3844 -f3 - | \
-		samtools sort --threads 128 -n  - | \
-		samtools fixmate --threads 128 -m - $4/${sample1}_PE_fixmate.bam 
-	samtools sort --threads 128 $4/${sample1}_PE_fixmate.bam | \
-		samtools markdup -r --threads 128 - $4/${sample1}_PE_nodup.bam 
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample1}_*R1*.fastq.gz $2/${sample1}_*R2*.fastq.gz | \
+		samtools view --threads 24 -uhS -F3844 -f3 - | \
+		samtools sort --threads 24 -n  - | \
+		samtools fixmate --threads 24 -m - $4/${sample1}_PE_fixmate.bam 
+	samtools sort --threads 24 $4/${sample1}_PE_fixmate.bam | \
+		samtools markdup -r --threads 24 - $4/${sample1}_PE_nodup.bam 
 	samtools index $4/${sample1}_PE_nodup.bam 
 
-	bwa mem -t128 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample1}_*S*.fastq.gz | \
-		samtools view -uhS --threads 128 -F3844 - | \
-		samtools sort --threads 128 - |  \
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample1}_*S*.fastq.gz | \
+		samtools view -uhS --threads 24 -F3844 - | \
+		samtools sort --threads 24 - |  \
 		samtools rmdup -s - $4/${sample1}_srmdup.bam
-	samtools sort --threads 128 -o $4/${sample1}_SE_nodup.bam $4/${sample1}_srmdup.bam
+	samtools sort --threads 24 -o $4/${sample1}_SE_nodup.bam $4/${sample1}_srmdup.bam
 	samtools index $4/${sample1}_SE_nodup.bam
 
-	samtools merge --threads 128 $4/${sample1}_nodup.bam $4/${sample1}_PE_nodup.bam $4/${sample1}_SE_nodup.bam
+	samtools merge --threads 24 $4/${sample1}_nodup.bam $4/${sample1}_PE_nodup.bam $4/${sample1}_SE_nodup.bam
 	samtools index $4/${sample1}_nodup.bam
 
-	samtools calmd -Ar --threads 128 $4/${sample1}_nodup.bam $1 | \
-		samtools sort --threads 128 -o $4/${sample1}_nodup.baq.bam - 
+	samtools calmd -Ar --threads 24 $4/${sample1}_nodup.bam $1 | \
+		samtools sort --threads 24 -o $4/${sample1}_nodup.baq.bam - 
 	samtools index $4/${sample1}_nodup.baq.bam 
 
 }
@@ -128,26 +128,26 @@ function Alignment_2LIB () {
 
 	sample1=${3}
 
-	bwa mem -t128 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample1}_*R1*.fastq.gz $2/${sample1}_*R2*.fastq.gz | \
-		samtools view --threads 128 -uhS -F3844 -f3 - | \
-		samtools sort --threads 128 -n  - | \
-		samtools fixmate --threads 128 -m - $4/${sample1}_PE_fixmate.bam 
-	samtools sort --threads 128 $4/${sample1}_PE_fixmate.bam | \
-		samtools markdup -r --threads 128 - $4/${sample1}_PE_nodup.bam 
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample1}_*R1*.fastq.gz $2/${sample1}_*R2*.fastq.gz | \
+		samtools view --threads 24 -uhS -F3844 -f3 - | \
+		samtools sort --threads 24 -n  - | \
+		samtools fixmate --threads 24 -m - $4/${sample1}_PE_fixmate.bam 
+	samtools sort --threads 24 $4/${sample1}_PE_fixmate.bam | \
+		samtools markdup -r --threads 24 - $4/${sample1}_PE_nodup.bam 
 	samtools index $4/${sample1}_PE_nodup.bam 
 
-	bwa mem -t128 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample1}_*S*.fastq.gz | \
-		samtools view -uhS --threads 128 -F3844 - | \
-		samtools sort --threads 128 - |  \
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample1}_*S*.fastq.gz | \
+		samtools view -uhS --threads 24 -F3844 - | \
+		samtools sort --threads 24 - |  \
 		samtools rmdup -s - $4/${sample1}_srmdup.bam
-	samtools sort --threads 128 -o $4/${sample1}_SE_nodup.bam $4/${sample1}_srmdup.bam
+	samtools sort --threads 24 -o $4/${sample1}_SE_nodup.bam $4/${sample1}_srmdup.bam
 	samtools index $4/${sample1}_SE_nodup.bam
 
-	samtools merge --threads 128 $4/${sample1}_nodup.bam $4/${sample1}_PE_nodup.bam $4/${sample1}_SE_nodup.bam
+	samtools merge --threads 24 $4/${sample1}_nodup.bam $4/${sample1}_PE_nodup.bam $4/${sample1}_SE_nodup.bam
 	samtools index $4/${sample1}_nodup.bam
 
-	samtools calmd -Ar --threads 128 $4/${sample1}_nodup.bam $1 | \
-		samtools sort --threads 128 -o $4/${sample1}_nodup.baq.bam - 
+	samtools calmd -Ar --threads 24 $4/${sample1}_nodup.bam $1 | \
+		samtools sort --threads 24 -o $4/${sample1}_nodup.baq.bam - 
 	samtools index $4/${sample1}_nodup.baq.bam 
 
 
@@ -156,32 +156,32 @@ function Alignment_2LIB () {
 
 	sample2=T${3#P}
 
-	bwa mem -t128 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample2}_*R1*.fastq.gz $2/${sample2}_*R2*.fastq.gz | \
-		samtools view --threads 128 -uhS -F3844 -f3 - | \
-		samtools sort --threads 128 -n  - | \
-		samtools fixmate --threads 128 -m - $4/${sample2}_PE_fixmate.bam 
-	samtools sort --threads 128 $4/${sample1}_PE_fixmate.bam | \
-		samtools markdup -r --threads 128 - $4/${sample2}_PE_nodup.bam 
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-PE' $1 $2/${sample2}_*R1*.fastq.gz $2/${sample2}_*R2*.fastq.gz | \
+		samtools view --threads 24 -uhS -F3844 -f3 - | \
+		samtools sort --threads 24 -n  - | \
+		samtools fixmate --threads 24 -m - $4/${sample2}_PE_fixmate.bam 
+	samtools sort --threads 24 $4/${sample1}_PE_fixmate.bam | \
+		samtools markdup -r --threads 24 - $4/${sample2}_PE_nodup.bam 
 	samtools index $4/${sample2}_PE_nodup.bam 
 
-	bwa mem -t128 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample2}_*S*.fastq.gz | \
-		samtools view -uhS --threads 128 -F3844 - | \
-		samtools sort --threads 128 - |  \
+	bwa mem -t24 -R '@RG\tID:foo\tSM:bar\tLB:library1-S' $1 $2/${sample2}_*S*.fastq.gz | \
+		samtools view -uhS --threads 24 -F3844 - | \
+		samtools sort --threads 24 - |  \
 		samtools rmdup -s - $4/${sample2}_srmdup.bam
-	samtools sort --threads 128 -o $4/${sample2}_SE_nodup.bam $4/${sample2}_srmdup.bam
+	samtools sort --threads 24 -o $4/${sample2}_SE_nodup.bam $4/${sample2}_srmdup.bam
 	samtools index $4/${sample2}_SE_nodup.bam
 
-	samtools merge --threads 128 $4/${sample2}_nodup.bam $4/${sample2}_PE_nodup.bam $4/${sample2}_SE_nodup.bam
+	samtools merge --threads 24 $4/${sample2}_nodup.bam $4/${sample2}_PE_nodup.bam $4/${sample2}_SE_nodup.bam
 	samtools index $4/${sample2}_nodup.bam
 
-	samtools calmd -Ar --threads 128 $4/${sample2}_nodup.bam $1 | \
-		samtools sort --threads 128 -o $4/${sample2}_nodup.baq.bam - 
+	samtools calmd -Ar --threads 24 $4/${sample2}_nodup.bam $1 | \
+		samtools sort --threads 24 -o $4/${sample2}_nodup.baq.bam - 
 	samtools index $4/${sample2}_nodup.baq.bam 
 
 
 	echo "MERGE TECH REPLICATE ALIGNMENTS"
 
-	samtools merge --threads 128 $4/${3}_merged.baq.bam $4/${sample1}_nodup.baq.bam $4/${sample2}_nodup.baq.bam
+	samtools merge --threads 24 $4/${3}_merged.baq.bam $4/${sample1}_nodup.baq.bam $4/${sample2}_nodup.baq.bam
 	samtools index $4/${3}_merged.baq.bam
 
 
