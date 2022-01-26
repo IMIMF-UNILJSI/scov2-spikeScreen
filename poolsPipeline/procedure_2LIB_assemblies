@@ -80,7 +80,7 @@ bash $HOMEFOLDER/make_samplesList_2LIB
 ########################################################################################################################################################
 
 echo "########################################################"
-echo "#################### TRIMMING & QC #####################"
+echo "####################### TRIMMING #######################"
 echo "########################################################"
 
 
@@ -90,17 +90,13 @@ for sample in $(cat samples_list); do
 	echo "###################### $sample #########################"
 	echo "########################################################"
 
- 	### TRIMMING AND QUALITY CONTROL
+ 	### TRIMMING
 
- 	FastQC $DATA_FOLDER $QC_RAW_FOLDER $sample
  	TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER $sample $REFERENCE_FOLDER
- 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER $sample
 
  	#second lib
 
- 	FastQC $DATA_FOLDER $QC_RAW_FOLDER T${sample#P}
  	TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER T${sample#P} $REFERENCE_FOLDER
- 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER T${sample#P}
 
 done
 
@@ -155,7 +151,32 @@ done
 ./variant_analysis.py --timepointsort=false --intersection=true --mutations_prefix=allMutations_intersection --selection=selectedMutations_intersection
 ./variant_analysis.py --timepointsort=false --intersection=false --mutations_prefix=allMutations_individual --selection=selectedMutations_individual 
 
+# ######################################################################################################################################################
 
+echo "########################################################"
+echo "########################## QC ##########################"
+echo "########################################################"
+
+
+for sample in $(cat samples_list); do
+
+ 	echo "########################################################"
+	echo "###################### $sample #########################"
+	echo "########################################################"
+
+ 	### QUALITY CONTROL
+
+ 	FastQC $DATA_FOLDER $QC_RAW_FOLDER $sample
+ 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER $sample
+
+ 	#second lib
+
+ 	FastQC $DATA_FOLDER $QC_RAW_FOLDER T${sample#P}
+ 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER T${sample#P}
+
+done
+
+# #######################################################################################################################################################
 # # zip output
 # zip $RESULTSFOLDER/Fastq.zip Fastq/*
 # zip $RESULTSFOLDER/qc_raw.zip qc_raw/*
@@ -171,3 +192,4 @@ done
 # zip $RESULTSFOLDER/coverage.zip coverages_raw *covPerc* *coverage.png *coverage.pdf
 # zip $RESULTSFOLDER/allMutations.zip allMutations*.xlsx selectedMutations.xlsx
 
+#########################################################################################################################################################

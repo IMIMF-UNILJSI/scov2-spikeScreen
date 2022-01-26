@@ -80,21 +80,19 @@ bash $HOMEFOLDER/make_samplesList_1LIB
 ########################################################################################################################################################
 
 echo "########################################################"
-echo "#################### TRIMMING & QC #####################"
+echo "#################### TRIMMING ##########################"
 echo "########################################################"
 
 
 for sample in $(cat samples_list); do
 
  	echo "########################################################"
-	echo "###################### $sample #########################"
+	echo "######################    $sample    ###################"
 	echo "########################################################"
 
- 	### TRIMMING AND QUALITY CONTROL
+ 	### TRIMMING
 
- 	FastQC $DATA_FOLDER $QC_RAW_FOLDER $sample
  	TrimReads $DATA_FOLDER $TRIMMED_READS_FOLDER $sample $REFERENCE_FOLDER
- 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER $sample
 
 
 done
@@ -157,6 +155,28 @@ done
 # summarize variant data to images, tables
 ./coverage_analysis.py --prefix cg --runmerged=false
 ./variant_analysis.py --timepointsort=false --intersection=false --mutations_prefix=allMutations_individual --selection=selectedMutations_individual
+
+
+# ######################################################################################################################################################
+
+echo "########################################################"
+echo "#################### QC ################################"
+echo "########################################################"
+
+
+for sample in $(cat samples_list); do
+
+ 	echo "########################################################"
+	echo "###################### $sample #########################"
+	echo "########################################################"
+
+ 	### QUALITY CONTROL
+
+ 	FastQC $DATA_FOLDER $QC_RAW_FOLDER $sample
+ 	FastQC $TRIMMED_READS_FOLDER $QC_TRIMMED_FOLDER $sample
+
+
+done
 
 # # zip output
 # zip $RESULTSFOLDER/Fastq.zip Fastq/*
